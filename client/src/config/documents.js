@@ -1,0 +1,190 @@
+import {
+  FileText,
+  FilePlus2,
+  FolderOpen,
+  Briefcase,
+  Award,
+  GraduationCap,
+  ClipboardList,
+  UserCheck,
+  LogOut,
+  IndianRupee,
+  AlertTriangle,
+  ScrollText,
+  UserRound,
+} from 'lucide-react'
+
+export const DOCUMENT_TYPE_LIST = [
+  { key: 'offer_letter', label: 'Offer Letters', prefix: 'THK-OL', icon: Briefcase, color: 'bg-blue-500' },
+  { key: 'intern_offer_letter', label: 'Intern Offer Letters', prefix: 'THK-IOL', icon: UserRound, color: 'bg-cyan-500' },
+  { key: 'experience_letter', label: 'Experience Letters', prefix: 'THK-EL', icon: Award, color: 'bg-indigo-500' },
+  { key: 'course_completion', label: 'Course Completion Certificates', prefix: 'THK-CCC', icon: GraduationCap, color: 'bg-emerald-500' },
+  { key: 'internship_certificate', label: 'Internship Certificates', prefix: 'THK-IC', icon: ClipboardList, color: 'bg-teal-500' },
+  { key: 'appointment_letter', label: 'Appointment Letters', prefix: 'THK-AL', icon: UserCheck, color: 'bg-violet-500' },
+  { key: 'relieving_letter', label: 'Relieving Letters', prefix: 'THK-RL', icon: LogOut, color: 'bg-orange-500' },
+  { key: 'salary_certificate', label: 'Salary Certificates', prefix: 'THK-SC', icon: IndianRupee, color: 'bg-green-500' },
+  { key: 'warning_letter', label: 'Warning Letter', prefix: 'THK-WL', icon: AlertTriangle, color: 'bg-red-500' },
+  { key: 'policy_document', label: 'Policy Documents', prefix: 'THK-PD', icon: ScrollText, color: 'bg-slate-500' },
+]
+
+export const documentSubNav = [
+  { title: 'Generate Documents', href: '/dashboard/documents/generate', icon: FilePlus2 },
+  { title: 'Document Management', href: '/dashboard/documents/management', icon: FolderOpen },
+]
+
+export const defaultFormData = {
+  offer_letter: {
+    recipientName: '', recipientAddress: '', position: '', department: '',
+    joiningDate: '', salary: '', location: '', reportingTo: '',
+    acceptanceDeadline: '', issueDate: new Date().toISOString().split('T')[0],
+    authorizedSignatory: 'HR Department',
+  },
+  intern_offer_letter: {
+    studentName: '', courseName: '', startDate: '', endDate: '',
+    issueDate: new Date().toISOString().split('T')[0],
+    authorizedSignatory: 'Academic & HR Department',
+  },
+  experience_letter: {
+    recipientName: '', designation: '', department: '', startDate: '', endDate: '',
+    responsibilities: '', issueDate: new Date().toISOString().split('T')[0],
+    authorizedSignatory: 'HR Department',
+  },
+  course_completion: {
+    recipientName: '', courseName: '', duration: '', grade: '', completionDate: '',
+    issueDate: new Date().toISOString().split('T')[0],
+    authorizedSignatory: 'Academic Director',
+  },
+  internship_certificate: {
+    recipientName: '', internshipRole: '', projectTitle: '', startDate: '', endDate: '',
+    performance: '', issueDate: new Date().toISOString().split('T')[0],
+    authorizedSignatory: 'Internship Coordinator',
+  },
+  appointment_letter: {
+    recipientName: '', position: '', department: '', effectiveDate: '', salary: '',
+    probationPeriod: '3 months', terms: '', issueDate: new Date().toISOString().split('T')[0],
+    authorizedSignatory: 'HR Department',
+  },
+  relieving_letter: {
+    recipientName: '', designation: '', department: '', lastWorkingDay: '', reason: '',
+    issueDate: new Date().toISOString().split('T')[0],
+    authorizedSignatory: 'HR Department',
+  },
+  salary_certificate: {
+    recipientName: '', designation: '', department: '', period: '',
+    grossSalary: '', netSalary: '', issueDate: new Date().toISOString().split('T')[0],
+    authorizedSignatory: 'Finance Department',
+  },
+  warning_letter: {
+    recipientName: '', issue: '', details: '', warningDate: '', consequences: '',
+    issueDate: new Date().toISOString().split('T')[0],
+    authorizedSignatory: 'HR Department',
+  },
+  policy_document: {
+    policyTitle: '', policyVersion: '1.0', effectiveDate: '', department: 'All',
+    content: '', issueDate: new Date().toISOString().split('T')[0],
+    authorizedSignatory: 'Management',
+  },
+}
+
+export const formFields = {
+  offer_letter: [
+    { name: 'recipientName', label: 'Candidate Name', required: true },
+    { name: 'recipientAddress', label: 'Address', type: 'textarea' },
+    { name: 'position', label: 'Position', required: true },
+    { name: 'department', label: 'Department', required: true },
+    { name: 'joiningDate', label: 'Joining Date', type: 'date', required: true },
+    { name: 'salary', label: 'Salary (per month)', required: true },
+    { name: 'location', label: 'Work Location' },
+    { name: 'reportingTo', label: 'Reporting To' },
+    { name: 'acceptanceDeadline', label: 'Acceptance Deadline', type: 'date' },
+    { name: 'issueDate', label: 'Issue Date', type: 'date' },
+    { name: 'authorizedSignatory', label: 'Authorized Signatory' },
+  ],
+  intern_offer_letter: [
+    { name: 'studentName', label: 'Student Name', required: true },
+    { name: 'courseName', label: 'Course Name', required: true },
+    { name: 'startDate', label: 'Start Date', type: 'date', required: true },
+    { name: 'endDate', label: 'End Date', type: 'date', required: true },
+  ],
+  experience_letter: [
+    { name: 'recipientName', label: 'Employee Name', required: true },
+    { name: 'designation', label: 'Designation', required: true },
+    { name: 'department', label: 'Department', required: true },
+    { name: 'startDate', label: 'Start Date', type: 'date', required: true },
+    { name: 'endDate', label: 'End Date', type: 'date', required: true },
+    { name: 'responsibilities', label: 'Key Responsibilities', type: 'textarea', required: true },
+    { name: 'issueDate', label: 'Issue Date', type: 'date' },
+    { name: 'authorizedSignatory', label: 'Authorized Signatory' },
+  ],
+  course_completion: [
+    { name: 'recipientName', label: 'Student Name', required: true },
+    { name: 'courseName', label: 'Course Name', required: true },
+    { name: 'duration', label: 'Duration', required: true },
+    { name: 'grade', label: 'Grade', required: true },
+    { name: 'completionDate', label: 'Completion Date', type: 'date', required: true },
+    { name: 'issueDate', label: 'Issue Date', type: 'date' },
+    { name: 'authorizedSignatory', label: 'Authorized Signatory' },
+  ],
+  internship_certificate: [
+    { name: 'recipientName', label: 'Intern Name', required: true },
+    { name: 'internshipRole', label: 'Internship Role', required: true },
+    { name: 'projectTitle', label: 'Project Title', required: true },
+    { name: 'startDate', label: 'Start Date', type: 'date', required: true },
+    { name: 'endDate', label: 'End Date', type: 'date', required: true },
+    { name: 'performance', label: 'Performance Summary', type: 'textarea' },
+    { name: 'issueDate', label: 'Issue Date', type: 'date' },
+    { name: 'authorizedSignatory', label: 'Authorized Signatory' },
+  ],
+  appointment_letter: [
+    { name: 'recipientName', label: 'Employee Name', required: true },
+    { name: 'position', label: 'Position', required: true },
+    { name: 'department', label: 'Department', required: true },
+    { name: 'effectiveDate', label: 'Effective Date', type: 'date', required: true },
+    { name: 'salary', label: 'Salary', required: true },
+    { name: 'probationPeriod', label: 'Probation Period' },
+    { name: 'terms', label: 'Additional Terms', type: 'textarea' },
+    { name: 'issueDate', label: 'Issue Date', type: 'date' },
+    { name: 'authorizedSignatory', label: 'Authorized Signatory' },
+  ],
+  relieving_letter: [
+    { name: 'recipientName', label: 'Employee Name', required: true },
+    { name: 'designation', label: 'Designation', required: true },
+    { name: 'department', label: 'Department', required: true },
+    { name: 'lastWorkingDay', label: 'Last Working Day', type: 'date', required: true },
+    { name: 'reason', label: 'Reason', type: 'textarea' },
+    { name: 'issueDate', label: 'Issue Date', type: 'date' },
+    { name: 'authorizedSignatory', label: 'Authorized Signatory' },
+  ],
+  salary_certificate: [
+    { name: 'recipientName', label: 'Employee Name', required: true },
+    { name: 'designation', label: 'Designation', required: true },
+    { name: 'department', label: 'Department', required: true },
+    { name: 'period', label: 'Salary Period', required: true },
+    { name: 'grossSalary', label: 'Gross Salary', required: true },
+    { name: 'netSalary', label: 'Net Salary', required: true },
+    { name: 'issueDate', label: 'Issue Date', type: 'date' },
+    { name: 'authorizedSignatory', label: 'Authorized Signatory' },
+  ],
+  warning_letter: [
+    { name: 'recipientName', label: 'Employee Name', required: true },
+    { name: 'issue', label: 'Warning Issue', required: true },
+    { name: 'details', label: 'Details', type: 'textarea' },
+    { name: 'warningDate', label: 'Warning Date', type: 'date', required: true },
+    { name: 'consequences', label: 'Consequences', type: 'textarea' },
+    { name: 'issueDate', label: 'Issue Date', type: 'date' },
+    { name: 'authorizedSignatory', label: 'Authorized Signatory' },
+  ],
+  policy_document: [
+    { name: 'policyTitle', label: 'Policy Title', required: true },
+    { name: 'policyVersion', label: 'Version', required: true },
+    { name: 'effectiveDate', label: 'Effective Date', type: 'date', required: true },
+    { name: 'department', label: 'Department' },
+    { name: 'content', label: 'Policy Content', type: 'textarea', required: true, rows: 8 },
+    { name: 'issueDate', label: 'Issue Date', type: 'date' },
+    { name: 'authorizedSignatory', label: 'Approved By' },
+  ],
+}
+
+export function getDocumentType(key) {
+  return DOCUMENT_TYPE_LIST.find((t) => t.key === key)
+}

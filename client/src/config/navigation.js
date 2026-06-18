@@ -1,0 +1,43 @@
+import {
+  LayoutDashboard,
+  Users,
+  GraduationCap,
+  BookOpen,
+  Layers,
+  ClipboardCheck,
+  FileText,
+  PenLine,
+  BarChart3,
+  CreditCard,
+  PieChart,
+  Bell,
+  Settings,
+  UserCog,
+  FolderOpen,
+} from 'lucide-react'
+
+export const sidebarNavItems = [
+  { title: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+  { title: 'Students', href: '/dashboard/students', icon: Users },
+  { title: 'Teachers', href: '/dashboard/teachers', icon: GraduationCap },
+  { title: 'Courses', href: '/dashboard/courses', icon: BookOpen },
+  { title: 'Batches', href: '/dashboard/batches', icon: Layers },
+  { title: 'Attendance', href: '/dashboard/attendance', icon: ClipboardCheck },
+  { title: 'Assignments', href: '/dashboard/assignments', icon: FileText },
+  { title: 'Exams', href: '/dashboard/exams', icon: PenLine },
+  { title: 'Results', href: '/dashboard/results', icon: BarChart3 },
+  { title: 'Fees & Payments', href: '/dashboard/fees', icon: CreditCard },
+  { title: 'Reports', href: '/dashboard/reports', icon: PieChart },
+  { title: 'Notifications', href: '/dashboard/notifications', icon: Bell },
+  {
+    title: 'Document Center',
+    href: '/dashboard/documents',
+    icon: FolderOpen,
+    children: [
+      { title: 'Generate Documents', href: '/dashboard/documents/generate' },
+      { title: 'Document Management', href: '/dashboard/documents/management' },
+    ],
+  },
+  { title: 'User Management', href: '/dashboard/users', icon: UserCog, adminOnly: true },
+  { title: 'Settings', href: '/dashboard/settings', icon: Settings },
+]
