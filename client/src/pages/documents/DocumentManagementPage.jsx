@@ -11,7 +11,7 @@ import { useAlert } from '@/context/AlertContext'
 
 export function DocumentManagementPage() {
   const navigate = useNavigate()
-  const { showSuccess, showError, showWarning } = useAlert()
+  const { showSuccess, showError } = useAlert()
   const [documents, setDocuments] = useState([])
   const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(true)
@@ -26,7 +26,7 @@ export function DocumentManagementPage() {
         setDocuments(res.data.documents)
         setTotal(res.data.total)
       })
-      .catch(() => showError('Load Failed', 'Could not load documents.'))
+      .catch(() => setDocuments([]))
       .finally(() => setLoading(false))
   }
 
@@ -54,7 +54,6 @@ export function DocumentManagementPage() {
   const handleDownload = async (id, docNumber) => {
     try {
       await downloadDocumentPdf(documentsApi, id, docNumber)
-      showSuccess('Download Complete', `${docNumber}.pdf saved successfully.`)
     } catch {
       showError('Download Failed', 'Could not generate PDF. Please try again.')
     }

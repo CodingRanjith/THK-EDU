@@ -22,13 +22,13 @@ function buildBulkAlert(results, summary) {
   if (summary.failed === 0) {
     return { type: 'success', title: 'All Documents Created', message: `${summary.success} document(s) generated successfully.`, details }
   }
-  if (summary.success === 0) {
-    return { type: 'error', title: 'Bulk Upload Failed', message: `All ${summary.failed} row(s) failed. Please check your Excel data.`, details }
-  }
   return {
-    type: 'warning',
-    title: 'Partially Completed',
-    message: `${summary.success} succeeded, ${summary.failed} failed out of ${summary.total} row(s).`,
+    type: 'error',
+    title: summary.success === 0 ? 'Bulk Upload Failed' : 'Bulk Upload Incomplete',
+    message:
+      summary.success === 0
+        ? `All ${summary.failed} row(s) failed. Please check your Excel data.`
+        : `${summary.success} succeeded, ${summary.failed} failed out of ${summary.total} row(s).`,
     details,
   }
 }
@@ -36,7 +36,7 @@ function buildBulkAlert(results, summary) {
 export function DocumentGeneratorPage() {
   const { type } = useParams()
   const navigate = useNavigate()
-  const { showSuccess, showError, showWarning, showAlert } = useAlert()
+  const { showSuccess, showError, showAlert } = useAlert()
   const fileInputRef = useRef(null)
 
   const docType = getDocumentType(type)
@@ -70,10 +70,7 @@ export function DocumentGeneratorPage() {
 
   const handleSaveSingle = async () => {
     const missing = fields.filter((f) => f.required && !String(formData[f.name] || '').trim())
-    if (missing.length > 0) {
-      showWarning('Missing Fields', `Please fill: ${missing.map((f) => f.label).join(', ')}`)
-      return
-    }
+    if (missing.length > 0) return
 
     setSaving(true)
     try {
@@ -98,40 +95,21 @@ export function DocumentGeneratorPage() {
     if (!file) return
 
     try {
-      const { rows, errors, totalRows } = await parseExcelFile(file, type)
-
-      if (rows.length === 0 && errors.length === 0) {
-        showWarning('Empty File', 'No valid data rows found in the Excel sheet.')
-        return
-      }
+      const { rows } = await parseExcelFile(file, type)
+      if (rows.length === 0) return
 
       setExcelRows(rows)
       setExcelFileName(file.name)
-
-      if (errors.length > 0) {
-        const details = errors.map(
-          (err) => `✗ Row ${err.row}: Missing ${err.missing.join(', ')}`
-        )
-        showWarning(
-          'Some Rows Skipped',
-          `${rows.length} valid row(s) loaded. ${errors.length} row(s) skipped due to missing required fields.`,
-          details
-        )
-      } else {
-        showSuccess('Excel Loaded', `${rows.length} of ${totalRows} row(s) ready for bulk generation.`)
-      }
-    } catch (err) {
-      showError('Upload Failed', err.message)
+    } catch {
+      setExcelRows([])
+      setExcelFileName('')
     }
 
     e.target.value = ''
   }
 
   const handleBulkGenerate = async () => {
-    if (excelRows.length === 0) {
-      showWarning('No Data', 'Please upload an Excel file first.')
-      return
-    }
+    if (excelRows.length === 0) return
 
     setSaving(true)
     try {
@@ -252,14 +230,7 @@ export function DocumentGeneratorPage() {
             <div className="flex flex-wrap gap-3">
               <Button
                 variant="outline"
-                onClick={async () => {
-                  try {
-                    await downloadExcelTemplate(type, docType.label)
-                    showSuccess('Template Downloaded', 'Excel template saved to your downloads folder.')
-                  } catch {
-                    showError('Download Failed', 'Could not download Excel template.')
-                  }
-                }}
+                onClick={() => downloadExcelTemplate(type, docType.label)}
               >
                 <Download className="h-4 w-4" />
                 Download Template
