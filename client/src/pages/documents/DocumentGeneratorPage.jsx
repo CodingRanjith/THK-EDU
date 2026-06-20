@@ -211,9 +211,17 @@ export function DocumentGeneratorPage() {
               </CardHeader>
               <CardContent>
                 <div
-                  className="rounded-lg border bg-white overflow-auto max-h-[calc(100vh-14rem)]"
-                  dangerouslySetInnerHTML={{ __html: previewHtml }}
-                />
+                  className={`overflow-auto max-h-[calc(100vh-14rem)] bg-slate-100/80 ${
+                    type === 'intern_offer_letter'
+                      ? 'rounded-lg border p-4 flex justify-center'
+                      : 'rounded-lg border bg-white'
+                  }`}
+                >
+                  <div
+                    className={type === 'intern_offer_letter' ? 'shadow-md' : 'w-full'}
+                    dangerouslySetInnerHTML={{ __html: previewHtml }}
+                  />
+                </div>
               </CardContent>
             </Card>
           </div>

@@ -42,7 +42,7 @@ export async function createSingleDocument(req, res) {
   if (!getRecipientName(formData, documentType)) {
     const msg =
       documentType === 'intern_offer_letter'
-        ? 'Student name is required'
+        ? 'Candidate name is required'
         : documentType === 'policy_document'
           ? 'Policy title is required'
           : 'Recipient name is required'

@@ -1,3 +1,6 @@
+import { buildInternOfferLetterBody, wrapTechackodeLetterhead } from '../../../shared/internOfferLetterContent.js'
+import letterheadImg from '@/assets/head.png'
+
 function escapeHtml(str = '') {
   return String(str)
     .replace(/&/g, '&amp;')
@@ -42,21 +45,8 @@ const templates = {
     </div>`,
 
   intern_offer_letter: (d, num) => {
-    const name = d.studentName || d.recipientName
-    const issueDate = d.issueDate || new Date().toISOString().split('T')[0]
-    return `
-    <div style="font-family:Georgia,serif;max-width:700px;margin:0 auto;padding:40px;color:#1e293b;line-height:1.7;">
-      ${letterHeader(num, issueDate)}
-      <p><strong>To,</strong><br/>${escapeHtml(name)}</p>
-      <h2 style="text-align:center;color:#1e3a8a;margin:24px 0;">INTERN OFFER LETTER</h2>
-      <p>Dear ${escapeHtml(name)},</p>
-      <p>We are pleased to offer you an internship opportunity under the <strong>${escapeHtml(d.courseName)}</strong> program at Techackode Edutech.</p>
-      <p>Your internship period will be from <strong>${escapeHtml(d.startDate)}</strong> to <strong>${escapeHtml(d.endDate)}</strong>.</p>
-      <p>During this period, you will gain hands-on experience and practical exposure aligned with your course curriculum. Please report to the Techackode office on your start date with valid ID proof and academic documents.</p>
-      <p>We look forward to welcoming you to the Techackode intern program and wish you a successful learning journey.</p>
-      <p style="margin-top:32px;">Sincerely,<br/><strong>${escapeHtml(d.authorizedSignatory || 'Academic & HR Department')}</strong><br/>Techackode Edutech</p>
-      ${letterFooter()}
-    </div>`
+    const body = buildInternOfferLetterBody(d)
+    return wrapTechackodeLetterhead(body, letterheadImg)
   },
 
   experience_letter: (d, num) => `
