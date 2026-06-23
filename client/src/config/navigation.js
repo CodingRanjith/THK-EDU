@@ -27,6 +27,7 @@ export const sidebarNavItems = [
       { title: 'Clients', href: '/dashboard/it/clients' },
       { title: 'Proposal', href: '/dashboard/it/proposals' },
       { title: 'Projects', href: '/dashboard/it/projects' },
+      { title: 'Team Management', href: '/dashboard/it/team-management' },
     ],
   },
   {

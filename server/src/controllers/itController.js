@@ -23,6 +23,18 @@ import {
   deleteProject,
   getProjectStats,
 } from '../models/itProjectModel.js'
+import {
+  listProjectsWithTeam,
+  listTeamMembers,
+  createTeamMember,
+  updateTeamMember,
+  deleteTeamMember,
+  listProjectAllocations,
+  getProjectTeamStats,
+  createAllocation,
+  updateAllocation,
+  deleteAllocation,
+} from '../models/itTeamModel.js'
 
 function pickBody(body, fields) {
   const data = {}
@@ -202,4 +214,109 @@ export async function removeProject(req, res) {
   const deleted = await deleteProject(req.params.id)
   if (!deleted) return res.status(404).json({ message: 'Project not found' })
   return res.json({ message: 'Project deleted' })
+}
+
+// --- Team Management ---
+
+export async function getTeamProjects(req, res) {
+  const { search, status, limit, offset } = req.query
+  const result = await listProjectsWithTeam({
+    search,
+    status,
+    limit: limit ? parseInt(limit, 10) : undefined,
+    offset: offset ? parseInt(offset, 10) : undefined,
+  })
+  return res.json(result)
+}
+
+export async function getTeamMembers(req, res) {
+  const { search, status } = req.query
+  const members = await listTeamMembers({ search, status })
+  return res.json({ members })
+}
+
+export async function createTeamMemberHandler(req, res) {
+  const { memberName } = req.body
+  if (!memberName?.trim()) {
+    return res.status(400).json({ message: 'Member name is required' })
+  }
+
+  const member = await createTeamMember(pickBody(req.body, [
+    'memberName', 'email', 'designation', 'defaultAvailableHours', 'status',
+  ]))
+
+  return res.status(201).json({ message: 'Team member created', member })
+}
+
+export async function updateTeamMemberHandler(req, res) {
+  const member = await updateTeamMember(req.params.id, pickBody(req.body, [
+    'memberName', 'email', 'designation', 'defaultAvailableHours', 'status',
+  ]))
+
+  if (!member) return res.status(404).json({ message: 'Team member not found' })
+  return res.json({ message: 'Team member updated', member })
+}
+
+export async function removeTeamMember(req, res) {
+  const deleted = await deleteTeamMember(req.params.id)
+  if (!deleted) return res.status(404).json({ message: 'Team member not found' })
+  return res.json({ message: 'Team member deleted' })
+}
+
+export async function getProjectTeam(req, res) {
+  const project = await getProjectById(req.params.projectId)
+  if (!project) return res.status(404).json({ message: 'Project not found' })
+
+  const { workArea } = req.query
+  const allocations = await listProjectAllocations(req.params.projectId, { workArea })
+  const stats = await getProjectTeamStats(req.params.projectId)
+
+  return res.json({ project, allocations, stats })
+}
+
+export async function createAllocationHandler(req, res) {
+  const project = await getProjectById(req.params.projectId)
+  if (!project) return res.status(404).json({ message: 'Project not found' })
+
+  const { teamMemberId, workArea } = req.body
+  if (!teamMemberId) return res.status(400).json({ message: 'Team member is required' })
+  if (!workArea) return res.status(400).json({ message: 'Work area is required' })
+
+  try {
+    const allocation = await createAllocation(req.params.projectId, pickBody(req.body, [
+      'teamMemberId', 'workArea', 'workingHours', 'availableHours', 'notes',
+    ]))
+    return res.status(201).json({ message: 'Team member allocated', allocation })
+  } catch (err) {
+    if (err.code === '23505') {
+      return res.status(409).json({
+        message: 'This member is already allocated to this work area on this project',
+      })
+    }
+    throw err
+  }
+}
+
+export async function updateAllocationHandler(req, res) {
+  try {
+    const allocation = await updateAllocation(req.params.id, pickBody(req.body, [
+      'teamMemberId', 'workArea', 'workingHours', 'availableHours', 'notes',
+    ]))
+
+    if (!allocation) return res.status(404).json({ message: 'Allocation not found' })
+    return res.json({ message: 'Allocation updated', allocation })
+  } catch (err) {
+    if (err.code === '23505') {
+      return res.status(409).json({
+        message: 'This member is already allocated to this work area on this project',
+      })
+    }
+    throw err
+  }
+}
+
+export async function removeAllocation(req, res) {
+  const deleted = await deleteAllocation(req.params.id)
+  if (!deleted) return res.status(404).json({ message: 'Allocation not found' })
+  return res.json({ message: 'Allocation removed' })
 }

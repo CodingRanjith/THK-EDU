@@ -16,6 +16,8 @@ import { DocumentViewPage } from '@/pages/documents/DocumentViewPage'
 import { ClientsPage } from '@/pages/it/ClientsPage'
 import { ProposalsPage } from '@/pages/it/ProposalsPage'
 import { ProjectsPage } from '@/pages/it/ProjectsPage'
+import { TeamManagementPage } from '@/pages/it/TeamManagementPage'
+import { ProjectTeamPage } from '@/pages/it/ProjectTeamPage'
 import { getPlaceholderRoutes } from '@/config/navigation'
 
 const placeholderRoutes = getPlaceholderRoutes()
@@ -51,6 +53,8 @@ export default function App() {
               <Route path="/dashboard/it/clients" element={<ClientsPage />} />
               <Route path="/dashboard/it/proposals" element={<ProposalsPage />} />
               <Route path="/dashboard/it/projects" element={<ProjectsPage />} />
+              <Route path="/dashboard/it/team-management" element={<TeamManagementPage />} />
+              <Route path="/dashboard/it/team-management/:projectId" element={<ProjectTeamPage />} />
 
               {placeholderRoutes.map((item) => (
                 <Route key={item.href} path={item.href} element={<PlaceholderPage />} />

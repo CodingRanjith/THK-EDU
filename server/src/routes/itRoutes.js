@@ -20,6 +20,15 @@ import {
   createProjectHandler,
   updateProjectHandler,
   removeProject,
+  getTeamProjects,
+  getTeamMembers,
+  createTeamMemberHandler,
+  updateTeamMemberHandler,
+  removeTeamMember,
+  getProjectTeam,
+  createAllocationHandler,
+  updateAllocationHandler,
+  removeAllocation,
 } from '../controllers/itController.js'
 
 const router = Router()
@@ -50,5 +59,16 @@ router.post('/projects', createProjectHandler)
 router.get('/projects/:id', getProject)
 router.put('/projects/:id', updateProjectHandler)
 router.delete('/projects/:id', removeProject)
+
+// Team Management
+router.get('/team/projects', getTeamProjects)
+router.get('/team/members', getTeamMembers)
+router.post('/team/members', createTeamMemberHandler)
+router.put('/team/members/:id', updateTeamMemberHandler)
+router.delete('/team/members/:id', removeTeamMember)
+router.get('/team/projects/:projectId', getProjectTeam)
+router.post('/team/projects/:projectId/allocations', createAllocationHandler)
+router.put('/team/allocations/:id', updateAllocationHandler)
+router.delete('/team/allocations/:id', removeAllocation)
 
 export default router

@@ -78,6 +78,16 @@ export const itApi = {
   createProject: (data) => api.post('/it/projects', data),
   updateProject: (id, data) => api.put(`/it/projects/${id}`, data),
   deleteProject: (id) => api.delete(`/it/projects/${id}`),
+
+  listTeamProjects: (params) => api.get('/it/team/projects', { params }),
+  listTeamMembers: (params) => api.get('/it/team/members', { params }),
+  createTeamMember: (data) => api.post('/it/team/members', data),
+  updateTeamMember: (id, data) => api.put(`/it/team/members/${id}`, data),
+  deleteTeamMember: (id) => api.delete(`/it/team/members/${id}`),
+  getProjectTeam: (projectId, params) => api.get(`/it/team/projects/${projectId}`, { params }),
+  createAllocation: (projectId, data) => api.post(`/it/team/projects/${projectId}/allocations`, data),
+  updateAllocation: (id, data) => api.put(`/it/team/allocations/${id}`, data),
+  deleteAllocation: (id) => api.delete(`/it/team/allocations/${id}`),
 }
 
 export default api
