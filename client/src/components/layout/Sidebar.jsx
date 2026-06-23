@@ -1,19 +1,31 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { ChevronDown, GraduationCap } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { sidebarNavItems } from '@/config/navigation'
+import {
+  sidebarNavItems,
+  getVisibleChildren,
+  getExpandedGroupForPath,
+} from '@/config/navigation'
 import { useAuth } from '@/context/AuthContext'
 
 export function Sidebar({ collapsed = false }) {
   const { user } = useAuth()
   const location = useLocation()
   const [expanded, setExpanded] = useState(() =>
-    location.pathname.startsWith('/dashboard/documents') ? 'Document Center' : null
+    getExpandedGroupForPath(location.pathname)
   )
 
+  useEffect(() => {
+    const group = getExpandedGroupForPath(location.pathname)
+    if (group) setExpanded(group)
+  }, [location.pathname])
+
   const items = sidebarNavItems.filter(
-    (item) => !item.adminOnly || user?.role === 'admin'
+    (item) =>
+      !item.adminOnly ||
+      user?.role === 'admin' ||
+      getVisibleChildren(item, user).length > 0
   )
 
   const isChildActive = (children) =>
@@ -41,15 +53,17 @@ export function Sidebar({ collapsed = false }) {
       <nav className="flex-1 overflow-y-auto p-3">
         <ul className="space-y-1">
           {items.map((item) => {
-            const hasChildren = item.children?.length > 0
+            const children = getVisibleChildren(item, user)
+            const hasChildren = children.length > 0
             const isOpen = expanded === item.title
             const active = item.href === '/dashboard'
               ? location.pathname === '/dashboard'
-              : location.pathname.startsWith(item.href) || isChildActive(item.children)
+              : (item.href && location.pathname.startsWith(item.href)) ||
+                isChildActive(children)
 
             if (hasChildren && !collapsed) {
               return (
-                <li key={item.href}>
+                <li key={item.title}>
                   <button
                     type="button"
                     onClick={() => setExpanded(isOpen ? null : item.title)}
@@ -70,7 +84,7 @@ export function Sidebar({ collapsed = false }) {
                   </button>
                   {isOpen && (
                     <ul className="ml-4 mt-1 space-y-1 border-l border-sidebar-border pl-3">
-                      {item.children.map((child) => (
+                      {children.map((child) => (
                         <li key={child.href}>
                           <NavLink
                             to={child.href}
@@ -94,9 +108,9 @@ export function Sidebar({ collapsed = false }) {
             }
 
             return (
-              <li key={item.href}>
+              <li key={item.href || item.title}>
                 <NavLink
-                  to={hasChildren ? item.children[0].href : item.href}
+                  to={hasChildren ? children[0].href : item.href}
                   end={item.href === '/dashboard'}
                   className={({ isActive }) =>
                     cn(

@@ -13,15 +13,9 @@ import { GenerateDocumentsPage } from '@/pages/documents/GenerateDocumentsPage'
 import { DocumentGeneratorPage } from '@/pages/documents/DocumentGeneratorPage'
 import { DocumentManagementPage } from '@/pages/documents/DocumentManagementPage'
 import { DocumentViewPage } from '@/pages/documents/DocumentViewPage'
-import { sidebarNavItems } from '@/config/navigation'
+import { getPlaceholderRoutes } from '@/config/navigation'
 
-const placeholderRoutes = sidebarNavItems.filter(
-  (item) =>
-    item.href !== '/dashboard' &&
-    item.href !== '/dashboard/users' &&
-    item.href !== '/dashboard/documents' &&
-    !item.children
-)
+const placeholderRoutes = getPlaceholderRoutes()
 
 export default function App() {
   return (

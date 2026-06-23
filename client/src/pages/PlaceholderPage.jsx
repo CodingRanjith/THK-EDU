@@ -1,10 +1,10 @@
 import { useLocation } from 'react-router-dom'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { sidebarNavItems } from '@/config/navigation'
+import { findNavItemByPath } from '@/config/navigation'
 
 export function PlaceholderPage() {
   const location = useLocation()
-  const navItem = sidebarNavItems.find((item) => item.href === location.pathname)
+  const navItem = findNavItemByPath(location.pathname)
 
   return (
     <div className="space-y-6">
