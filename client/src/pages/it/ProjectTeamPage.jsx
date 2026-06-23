@@ -232,7 +232,7 @@ export function ProjectTeamPage() {
     setAllocForm((prev) => ({
       ...prev,
       teamMemberId: memberId,
-      availableHours: member?.default_available_hours ?? prev.availableHours || '40',
+      availableHours: member?.default_available_hours ?? prev.availableHours ?? '40',
     }))
   }
 
