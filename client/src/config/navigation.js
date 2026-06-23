@@ -122,7 +122,8 @@ export function getPlaceholderRoutes() {
         if (
           child.adminOnly ||
           RESERVED_PATHS.has(child.href) ||
-          child.href.startsWith('/dashboard/documents')
+          child.href.startsWith('/dashboard/documents') ||
+          child.href.startsWith('/dashboard/it')
         ) {
           continue
         }

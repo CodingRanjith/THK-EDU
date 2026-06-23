@@ -56,4 +56,28 @@ export const documentsApi = {
   getTypes: () => api.get('/documents/types'),
 }
 
+export const itApi = {
+  listClients: (params) => api.get('/it/clients', { params }),
+  getClientStats: () => api.get('/it/clients/stats'),
+  listClientsBrief: () => api.get('/it/clients/brief'),
+  getClient: (id) => api.get(`/it/clients/${id}`),
+  createClient: (data) => api.post('/it/clients', data),
+  updateClient: (id, data) => api.put(`/it/clients/${id}`, data),
+  deleteClient: (id) => api.delete(`/it/clients/${id}`),
+
+  listProposals: (params) => api.get('/it/proposals', { params }),
+  getProposalStats: () => api.get('/it/proposals/stats'),
+  getProposal: (id) => api.get(`/it/proposals/${id}`),
+  createProposal: (data) => api.post('/it/proposals', data),
+  updateProposal: (id, data) => api.put(`/it/proposals/${id}`, data),
+  deleteProposal: (id) => api.delete(`/it/proposals/${id}`),
+
+  listProjects: (params) => api.get('/it/projects', { params }),
+  getProjectStats: () => api.get('/it/projects/stats'),
+  getProject: (id) => api.get(`/it/projects/${id}`),
+  createProject: (data) => api.post('/it/projects', data),
+  updateProject: (id, data) => api.put(`/it/projects/${id}`, data),
+  deleteProject: (id) => api.delete(`/it/projects/${id}`),
+}
+
 export default api

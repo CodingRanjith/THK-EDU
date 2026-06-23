@@ -13,6 +13,9 @@ import { GenerateDocumentsPage } from '@/pages/documents/GenerateDocumentsPage'
 import { DocumentGeneratorPage } from '@/pages/documents/DocumentGeneratorPage'
 import { DocumentManagementPage } from '@/pages/documents/DocumentManagementPage'
 import { DocumentViewPage } from '@/pages/documents/DocumentViewPage'
+import { ClientsPage } from '@/pages/it/ClientsPage'
+import { ProposalsPage } from '@/pages/it/ProposalsPage'
+import { ProjectsPage } from '@/pages/it/ProjectsPage'
 import { getPlaceholderRoutes } from '@/config/navigation'
 
 const placeholderRoutes = getPlaceholderRoutes()
@@ -44,6 +47,10 @@ export default function App() {
                 <Route path="management" element={<DocumentManagementPage />} />
                 <Route path="management/:id" element={<DocumentViewPage />} />
               </Route>
+
+              <Route path="/dashboard/it/clients" element={<ClientsPage />} />
+              <Route path="/dashboard/it/proposals" element={<ProposalsPage />} />
+              <Route path="/dashboard/it/projects" element={<ProjectsPage />} />
 
               {placeholderRoutes.map((item) => (
                 <Route key={item.href} path={item.href} element={<PlaceholderPage />} />
