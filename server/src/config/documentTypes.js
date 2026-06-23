@@ -1,6 +1,7 @@
 export const DOCUMENT_TYPES = {
   offer_letter: { prefix: 'THK-OL', label: 'Offer Letter' },
   intern_offer_letter: { prefix: 'THK-IOL', label: 'Intern Offer Letter' },
+  intern_experience_letter: { prefix: 'THK-IEL', label: 'Intern Experience Letter' },
   experience_letter: { prefix: 'THK-EL', label: 'Experience Letter' },
   course_completion: { prefix: 'THK-CCC', label: 'Course Completion Certificate' },
   internship_certificate: { prefix: 'THK-IC', label: 'Internship Certificate' },

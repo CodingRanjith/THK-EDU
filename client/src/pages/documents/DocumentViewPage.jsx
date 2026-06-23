@@ -69,7 +69,12 @@ export function DocumentViewPage() {
 
   const handleDownload = async () => {
     try {
-      await downloadDocumentPdf(documentsApi, id, document.document_number)
+      await downloadDocumentPdf(
+        documentsApi,
+        id,
+        document.document_number,
+        document.recipient_name
+      )
     } catch {
       showError('Download Failed', 'Could not generate PDF. Please try again.')
     }

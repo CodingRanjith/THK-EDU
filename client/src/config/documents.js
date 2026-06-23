@@ -12,11 +12,13 @@ import {
   AlertTriangle,
   ScrollText,
   UserRound,
+  BadgeCheck,
 } from 'lucide-react'
 
 export const DOCUMENT_TYPE_LIST = [
   { key: 'offer_letter', label: 'Offer Letters', prefix: 'THK-OL', icon: Briefcase, color: 'bg-blue-500' },
   { key: 'intern_offer_letter', label: 'Intern Offer Letters', prefix: 'THK-IOL', icon: UserRound, color: 'bg-cyan-500' },
+  { key: 'intern_experience_letter', label: 'Intern Experience Letters', prefix: 'THK-IEL', icon: BadgeCheck, color: 'bg-sky-500' },
   { key: 'experience_letter', label: 'Experience Letters', prefix: 'THK-EL', icon: Award, color: 'bg-indigo-500' },
   { key: 'course_completion', label: 'Course Completion Certificates', prefix: 'THK-CCC', icon: GraduationCap, color: 'bg-emerald-500' },
   { key: 'internship_certificate', label: 'Internship Certificates', prefix: 'THK-IC', icon: ClipboardList, color: 'bg-teal-500' },
@@ -48,6 +50,17 @@ export const defaultFormData = {
     endDate: '',
     workMode: 'Online',
     communicationPlatform: 'Google Chat',
+  },
+  intern_experience_letter: {
+    studentName: '',
+    internshipDomain: '',
+    position: '',
+    duration: '',
+    startDate: '',
+    endDate: '',
+    workMode: 'Online',
+    projectTitle: '',
+    performance: 'Satisfactory performance throughout the internship period.',
   },
   experience_letter: {
     recipientName: '', designation: '', department: '', startDate: '', endDate: '',
@@ -114,6 +127,17 @@ export const formFields = {
     { name: 'endDate', label: 'End Date', type: 'date', required: true },
     { name: 'workMode', label: 'Work Mode', required: true },
     { name: 'communicationPlatform', label: 'Communication Platform', required: true },
+  ],
+  intern_experience_letter: [
+    { name: 'studentName', label: 'Intern Name', required: true },
+    { name: 'internshipDomain', label: 'Internship Domain', required: true, placeholder: 'e.g. Web Development Domain' },
+    { name: 'position', label: 'Position', required: true, placeholder: 'e.g. Web Development Intern' },
+    { name: 'duration', label: 'Duration', required: true, placeholder: 'e.g. 3 Months' },
+    { name: 'startDate', label: 'Start Date', type: 'date', required: true },
+    { name: 'endDate', label: 'End Date', type: 'date', required: true },
+    { name: 'workMode', label: 'Work Mode', required: true },
+    { name: 'projectTitle', label: 'Project / Work Summary', required: true, placeholder: 'e.g. Edutech Dashboard Module' },
+    { name: 'performance', label: 'Performance Summary', type: 'textarea' },
   ],
   experience_letter: [
     { name: 'recipientName', label: 'Employee Name', required: true },

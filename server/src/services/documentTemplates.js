@@ -1,4 +1,4 @@
-import { buildInternOfferLetterBody, wrapTechackodeLetterhead } from '../../../shared/internOfferLetterContent.js'
+import { buildInternOfferLetterBody, buildInternExperienceLetterBody, wrapTechackodeLetterhead } from '../../../shared/internOfferLetterContent.js'
 import { getLetterheadDataUri } from './letterhead.js'
 
 function escapeHtml(str = '') {
@@ -46,6 +46,11 @@ const templates = {
 
   intern_offer_letter: (d, num) => {
     const body = buildInternOfferLetterBody(d)
+    return wrapTechackodeLetterhead(body, getLetterheadDataUri())
+  },
+
+  intern_experience_letter: (d, num) => {
+    const body = buildInternExperienceLetterBody(d)
     return wrapTechackodeLetterhead(body, getLetterheadDataUri())
   },
 

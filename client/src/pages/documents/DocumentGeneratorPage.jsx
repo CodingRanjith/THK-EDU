@@ -12,6 +12,8 @@ import { documentsApi } from '@/lib/api'
 import { downloadExcelTemplate, getExcelColumns, parseExcelFile } from '@/lib/excelBulk'
 import { useAlert } from '@/context/AlertContext'
 
+const LETTERHEAD_DOC_TYPES = ['intern_offer_letter', 'intern_experience_letter']
+
 function buildBulkAlert(results, summary) {
   const details = results.map((r) =>
     r.success
@@ -212,13 +214,13 @@ export function DocumentGeneratorPage() {
               <CardContent>
                 <div
                   className={`overflow-auto max-h-[calc(100vh-14rem)] bg-slate-100/80 ${
-                    type === 'intern_offer_letter'
+                    LETTERHEAD_DOC_TYPES.includes(type)
                       ? 'rounded-lg border p-4 flex justify-center'
                       : 'rounded-lg border bg-white'
                   }`}
                 >
                   <div
-                    className={type === 'intern_offer_letter' ? 'shadow-md' : 'w-full'}
+                    className={LETTERHEAD_DOC_TYPES.includes(type) ? 'shadow-md' : 'w-full'}
                     dangerouslySetInnerHTML={{ __html: previewHtml }}
                   />
                 </div>

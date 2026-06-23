@@ -11,7 +11,9 @@ import {
 
 function getRecipientName(formData, documentType) {
   if (documentType === 'policy_document') return formData.policyTitle
-  if (documentType === 'intern_offer_letter') return formData.studentName
+  if (documentType === 'intern_offer_letter' || documentType === 'intern_experience_letter') {
+    return formData.studentName
+  }
   return formData.recipientName
 }
 
@@ -41,7 +43,7 @@ export async function createSingleDocument(req, res) {
 
   if (!getRecipientName(formData, documentType)) {
     const msg =
-      documentType === 'intern_offer_letter'
+      documentType === 'intern_offer_letter' || documentType === 'intern_experience_letter'
         ? 'Candidate name is required'
         : documentType === 'policy_document'
           ? 'Policy title is required'
@@ -95,7 +97,9 @@ export async function createBulkDocuments(req, res) {
         results.push({
           row: rowNum,
           success: false,
-          error: documentType === 'intern_offer_letter' ? 'Student name is required' : 'Recipient name is required',
+          error: documentType === 'intern_offer_letter' || documentType === 'intern_experience_letter'
+            ? 'Intern name is required'
+            : 'Recipient name is required',
         })
         continue
       }
@@ -189,7 +193,12 @@ export async function downloadDocument(req, res) {
 
   try {
     const pdfBuffer = await htmlToPdfBuffer(doc.html_content)
-    const filename = `${doc.document_number}.pdf`
+    const safeName = (doc.recipient_name || 'Document')
+      .trim()
+      .replace(/[<>:"/\\|?*]/g, '')
+      .replace(/\s+/g, '_')
+      .replace(/_+/g, '_') || 'Document'
+    const filename = `${safeName}_${doc.document_number}.pdf`
     res.setHeader('Content-Type', 'application/pdf')
     res.setHeader('Content-Disposition', `attachment; filename="${filename}"`)
     return res.send(pdfBuffer)
