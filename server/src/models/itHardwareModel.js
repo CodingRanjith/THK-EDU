@@ -127,7 +127,12 @@ export async function getHardwareStats() {
       COUNT(*) FILTER (WHERE status = 'available')::int AS available,
       COUNT(*) FILTER (WHERE status = 'assigned')::int AS assigned,
       COUNT(*) FILTER (WHERE status = 'in_repair')::int AS in_repair,
-      COUNT(*) FILTER (WHERE status = 'retired')::int AS retired
+      COUNT(*) FILTER (WHERE status = 'retired')::int AS retired,
+      COALESCE(SUM(purchase_cost), 0)::float AS total_cost,
+      COALESCE(SUM(purchase_cost) FILTER (WHERE status = 'available'), 0)::float AS available_cost,
+      COALESCE(SUM(purchase_cost) FILTER (WHERE status = 'assigned'), 0)::float AS assigned_cost,
+      COALESCE(SUM(purchase_cost) FILTER (WHERE status = 'in_repair'), 0)::float AS in_repair_cost,
+      COALESCE(SUM(purchase_cost) FILTER (WHERE status = 'retired'), 0)::float AS retired_cost
     FROM it_hardware_assets
   `)
   return result.rows[0]

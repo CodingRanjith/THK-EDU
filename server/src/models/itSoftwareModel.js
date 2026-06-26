@@ -131,7 +131,11 @@ export async function getSoftwareStats() {
       COUNT(*) FILTER (WHERE status = 'expired')::int AS expired,
       COUNT(*) FILTER (WHERE status = 'trial')::int AS trial,
       COALESCE(SUM(total_licenses), 0)::int AS total_licenses,
-      COALESCE(SUM(used_licenses), 0)::int AS used_licenses
+      COALESCE(SUM(used_licenses), 0)::int AS used_licenses,
+      COALESCE(SUM(cost), 0)::float AS total_cost,
+      COALESCE(SUM(cost) FILTER (WHERE status = 'active'), 0)::float AS active_cost,
+      COALESCE(SUM(cost) FILTER (WHERE status = 'expired'), 0)::float AS expired_cost,
+      COALESCE(SUM(cost) FILTER (WHERE status = 'trial'), 0)::float AS trial_cost
     FROM it_software_assets
   `)
   return result.rows[0]

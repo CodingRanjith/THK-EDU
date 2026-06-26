@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
-import { ChevronDown, GraduationCap } from 'lucide-react'
+import { ChevronDown, GraduationCap, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import {
   sidebarNavItems,
@@ -34,23 +34,27 @@ export function Sidebar({ collapsed = false }) {
   return (
     <aside
       className={cn(
-        'flex h-full flex-col bg-sidebar text-sidebar-foreground border-r border-sidebar-border transition-all duration-300',
-        collapsed ? 'w-[72px]' : 'w-64'
+        'relative flex h-full flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground transition-all duration-300',
+        'before:pointer-events-none before:absolute before:inset-0 before:bg-gradient-to-b before:from-white/5 before:to-transparent',
+        collapsed ? 'w-[76px]' : 'w-[272px]'
       )}
     >
-      <div className="flex h-16 items-center gap-3 border-b border-sidebar-border px-4">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+      <div className="relative flex h-[4.25rem] items-center gap-3 border-b border-sidebar-border px-4">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-lg shadow-primary/25">
           <GraduationCap className="h-5 w-5" />
         </div>
         {!collapsed && (
           <div className="min-w-0">
-            <p className="truncate text-sm font-bold tracking-wide">Techackode</p>
-            <p className="truncate text-xs text-sidebar-foreground/70">Edutech Platform</p>
+            <p className="truncate text-sm font-bold tracking-tight">Techackode</p>
+            <p className="flex items-center gap-1 truncate text-xs text-sidebar-foreground/60">
+              <Sparkles className="h-3 w-3" />
+              Edutech Platform
+            </p>
           </div>
         )}
       </div>
 
-      <nav className="flex-1 overflow-y-auto p-3">
+      <nav className="relative flex-1 overflow-y-auto px-3 py-4">
         <ul className="space-y-1">
           {items.map((item) => {
             const children = getVisibleChildren(item, user)
@@ -68,32 +72,32 @@ export function Sidebar({ collapsed = false }) {
                     type="button"
                     onClick={() => setExpanded(isOpen ? null : item.title)}
                     className={cn(
-                      'flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
+                      'flex w-full items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200',
                       active
-                        ? 'bg-sidebar-accent text-white'
-                        : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/60 hover:text-white'
+                        ? 'sidebar-nav-active'
+                        : 'text-sidebar-foreground/75 hover:bg-sidebar-accent/50 hover:text-white'
                     )}
                   >
                     <span className="flex items-center gap-3">
-                      <item.icon className="h-4 w-4 shrink-0" />
+                      <item.icon className="h-4 w-4 shrink-0 opacity-90" />
                       <span className="truncate">{item.title}</span>
                     </span>
                     <ChevronDown
-                      className={cn('h-4 w-4 shrink-0 transition-transform', isOpen && 'rotate-180')}
+                      className={cn('h-4 w-4 shrink-0 opacity-60 transition-transform duration-200', isOpen && 'rotate-180')}
                     />
                   </button>
                   {isOpen && (
-                    <ul className="ml-4 mt-1 space-y-1 border-l border-sidebar-border pl-3">
+                    <ul className="ml-5 mt-1 space-y-0.5 border-l border-sidebar-border/80 pl-3">
                       {children.map((child) => (
                         <li key={child.href}>
                           <NavLink
                             to={child.href}
                             className={({ isActive }) =>
                               cn(
-                                'block rounded-lg px-3 py-2 text-sm transition-colors',
+                                'block rounded-lg px-3 py-2 text-sm transition-all duration-200',
                                 isActive
-                                  ? 'bg-sidebar-accent text-white font-medium'
-                                  : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-white'
+                                  ? 'bg-sidebar-accent font-medium text-white shadow-sm'
+                                  : 'text-sidebar-foreground/65 hover:bg-sidebar-accent/40 hover:text-white'
                               )
                             }
                           >
@@ -114,15 +118,15 @@ export function Sidebar({ collapsed = false }) {
                   end={item.href === '/dashboard'}
                   className={({ isActive }) =>
                     cn(
-                      'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
+                      'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200',
                       (isActive || active)
-                        ? 'bg-sidebar-accent text-white'
-                        : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/60 hover:text-white'
+                        ? 'sidebar-nav-active'
+                        : 'text-sidebar-foreground/75 hover:bg-sidebar-accent/50 hover:text-white'
                     )
                   }
                   title={collapsed ? item.title : undefined}
                 >
-                  <item.icon className="h-4 w-4 shrink-0" />
+                  <item.icon className="h-4 w-4 shrink-0 opacity-90" />
                   {!collapsed && <span className="truncate">{item.title}</span>}
                 </NavLink>
               </li>
@@ -131,9 +135,13 @@ export function Sidebar({ collapsed = false }) {
         </ul>
       </nav>
 
-      {!collapsed && (
-        <div className="border-t border-sidebar-border p-4">
-          <p className="text-xs text-sidebar-foreground/60">
+      {!collapsed && user && (
+        <div className="relative border-t border-sidebar-border p-4">
+          <div className="rounded-xl bg-sidebar-accent/40 p-3">
+            <p className="truncate text-xs font-medium text-white">{user.name}</p>
+            <p className="truncate text-xs capitalize text-sidebar-foreground/60">{user.role}</p>
+          </div>
+          <p className="mt-3 text-center text-[10px] text-sidebar-foreground/40">
             © {new Date().getFullYear()} Techackode
           </p>
         </div>

@@ -1,3 +1,6 @@
+import { FilterBar } from '@/components/ui/page'
+import { fieldClassName } from '@/components/ui/input'
+
 const MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December',
@@ -48,11 +51,11 @@ export function FinancePeriodFilter({ period, onChange, className = '' }) {
   const years = Array.from({ length: 7 }, (_, i) => new Date().getFullYear() - 3 + i)
 
   return (
-    <div className={`flex flex-wrap items-end gap-3 ${className}`}>
-      <div className="space-y-1">
-        <label className="text-xs font-medium text-muted-foreground">Period</label>
+    <FilterBar className={className}>
+      <div className="space-y-1.5">
+        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Period</label>
         <select
-          className="h-10 rounded-md border border-input bg-background px-3 text-sm"
+          className={fieldClassName}
           value={period.periodType}
           onChange={(e) => onChange({ ...period, periodType: e.target.value })}
         >
@@ -64,10 +67,10 @@ export function FinancePeriodFilter({ period, onChange, className = '' }) {
 
       {period.periodType === 'month' && (
         <>
-          <div className="space-y-1">
-            <label className="text-xs font-medium text-muted-foreground">Month</label>
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Month</label>
             <select
-              className="h-10 rounded-md border border-input bg-background px-3 text-sm"
+              className={fieldClassName}
               value={period.month}
               onChange={(e) => onChange({ ...period, month: Number(e.target.value) })}
             >
@@ -76,10 +79,10 @@ export function FinancePeriodFilter({ period, onChange, className = '' }) {
               ))}
             </select>
           </div>
-          <div className="space-y-1">
-            <label className="text-xs font-medium text-muted-foreground">Year</label>
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Year</label>
             <select
-              className="h-10 rounded-md border border-input bg-background px-3 text-sm"
+              className={fieldClassName}
               value={period.year}
               onChange={(e) => onChange({ ...period, year: Number(e.target.value) })}
             >
@@ -92,10 +95,10 @@ export function FinancePeriodFilter({ period, onChange, className = '' }) {
       )}
 
       {period.periodType === 'year' && (
-        <div className="space-y-1">
-          <label className="text-xs font-medium text-muted-foreground">Year</label>
+        <div className="space-y-1.5">
+          <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Year</label>
           <select
-            className="h-10 rounded-md border border-input bg-background px-3 text-sm"
+            className={fieldClassName}
             value={period.year}
             onChange={(e) => onChange({ ...period, year: Number(e.target.value) })}
           >
@@ -108,26 +111,26 @@ export function FinancePeriodFilter({ period, onChange, className = '' }) {
 
       {period.periodType === 'range' && (
         <>
-          <div className="space-y-1">
-            <label className="text-xs font-medium text-muted-foreground">Start Date</label>
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Start Date</label>
             <input
               type="date"
-              className="h-10 rounded-md border border-input bg-background px-3 text-sm"
+              className={fieldClassName}
               value={period.startDate}
               onChange={(e) => onChange({ ...period, startDate: e.target.value })}
             />
           </div>
-          <div className="space-y-1">
-            <label className="text-xs font-medium text-muted-foreground">End Date</label>
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">End Date</label>
             <input
               type="date"
-              className="h-10 rounded-md border border-input bg-background px-3 text-sm"
+              className={fieldClassName}
               value={period.endDate}
               onChange={(e) => onChange({ ...period, endDate: e.target.value })}
             />
           </div>
         </>
       )}
-    </div>
+    </FilterBar>
   )
 }

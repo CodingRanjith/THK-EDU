@@ -1,12 +1,12 @@
 export function Footer() {
   return (
-    <footer className="border-t bg-card px-4 py-3 lg:px-6">
-      <div className="flex flex-col items-center justify-between gap-2 text-sm text-muted-foreground sm:flex-row">
+    <footer className="border-t border-border/60 bg-card/50 px-4 py-4 backdrop-blur-sm lg:px-6">
+      <div className="mx-auto flex max-w-[1600px] flex-col items-center justify-between gap-2 text-xs text-muted-foreground sm:flex-row sm:text-sm">
         <p>© {new Date().getFullYear()} Techackode Edutech. All rights reserved.</p>
-        <div className="flex gap-4">
-          <a href="#" className="hover:text-foreground transition-colors">Privacy</a>
-          <a href="#" className="hover:text-foreground transition-colors">Terms</a>
-          <a href="#" className="hover:text-foreground transition-colors">Support</a>
+        <div className="flex gap-6">
+          <a href="#" className="transition-colors hover:text-primary">Privacy</a>
+          <a href="#" className="transition-colors hover:text-primary">Terms</a>
+          <a href="#" className="transition-colors hover:text-primary">Support</a>
         </div>
       </div>
     </footer>

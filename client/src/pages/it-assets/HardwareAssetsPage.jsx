@@ -10,6 +10,8 @@ import {
   Trash2,
   Wrench,
   Package,
+  IndianRupee,
+  Banknote,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -203,9 +205,13 @@ export function HardwareAssetsPage() {
   const statCards = stats
     ? [
         { label: 'Total Assets', value: stats.total, icon: HardDrive },
+        { label: 'Total Purchase Cost', value: formatCurrency(stats.total_cost), icon: IndianRupee },
         { label: 'Available', value: stats.available, icon: Package },
+        { label: 'Available Cost', value: formatCurrency(stats.available_cost), icon: Banknote },
         { label: 'Assigned', value: stats.assigned, icon: Monitor },
+        { label: 'Assigned Cost', value: formatCurrency(stats.assigned_cost), icon: IndianRupee },
         { label: 'In Repair', value: stats.in_repair, icon: Wrench },
+        { label: 'In Repair Cost', value: formatCurrency(stats.in_repair_cost), icon: Banknote },
       ]
     : []
 

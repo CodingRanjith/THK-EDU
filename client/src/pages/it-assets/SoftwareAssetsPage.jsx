@@ -10,6 +10,8 @@ import {
   Trash2,
   CheckCircle,
   Clock,
+  IndianRupee,
+  Banknote,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -213,13 +215,17 @@ export function SoftwareAssetsPage() {
   const statCards = stats
     ? [
         { label: 'Total Software', value: stats.total, icon: AppWindow },
+        { label: 'Total Software Cost', value: formatCurrency(stats.total_cost), icon: IndianRupee },
         { label: 'Active', value: stats.active, icon: CheckCircle },
+        { label: 'Active Cost', value: formatCurrency(stats.active_cost), icon: Banknote },
         { label: 'Expired', value: stats.expired, icon: Clock },
+        { label: 'Expired Cost', value: formatCurrency(stats.expired_cost), icon: IndianRupee },
         {
           label: 'Licenses Used',
           value: `${stats.used_licenses} / ${stats.total_licenses}`,
           icon: Key,
         },
+        { label: 'Trial Cost', value: formatCurrency(stats.trial_cost), icon: Banknote },
       ]
     : []
 

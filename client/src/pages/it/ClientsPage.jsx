@@ -10,7 +10,9 @@ import {
   FormSelect,
   StatsCards,
   StatusBadge,
+  DataTable,
 } from '@/components/it/ItShared'
+import { PageHeader } from '@/components/ui/page'
 import { itApi } from '@/lib/api'
 import { exportToExcel, formatCurrency, formatDate, formatLabel } from '@/lib/itUtils'
 import { useAlert } from '@/context/AlertContext'
@@ -175,17 +177,16 @@ export function ClientsPage() {
     : []
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">IT Clients</h1>
-          <p className="text-muted-foreground">Manage client records ({total} total)</p>
-        </div>
+    <div className="space-y-8">
+      <PageHeader
+        title="IT Clients"
+        description={`Manage client records and commercial relationships (${total} total)`}
+      >
         <Button onClick={openCreate}>
           <Plus className="h-4 w-4" />
           Add Client
         </Button>
-      </div>
+      </PageHeader>
 
       <StatsCards stats={statCards} />
 
@@ -243,10 +244,9 @@ export function ClientsPage() {
           ) : clients.length === 0 ? (
             <p className="py-8 text-center text-sm text-muted-foreground">No clients found.</p>
           ) : (
-            <div className="overflow-x-auto rounded-md border">
-              <table className="w-full min-w-[1200px] border-collapse text-sm">
+            <DataTable minWidth="1200px">
                 <thead>
-                  <tr className="border-b bg-muted/40 text-left text-muted-foreground">
+                  <tr>
                     <th className="px-3 py-3 font-medium text-center">S.No</th>
                     <th className="px-3 py-3 font-medium">Client Number</th>
                     <th className="px-3 py-3 font-medium">Client Name</th>
@@ -301,8 +301,7 @@ export function ClientsPage() {
                     </tr>
                   ))}
                 </tbody>
-              </table>
-            </div>
+              </DataTable>
           )}
         </CardContent>
       </Card>

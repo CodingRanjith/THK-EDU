@@ -1,40 +1,159 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: oklch(0.985 0.002 247);
-  --color-foreground: oklch(0.18 0.02 260);
+  --color-background: oklch(0.985 0.004 265);
+  --color-foreground: oklch(0.17 0.02 265);
   --color-card: oklch(1 0 0);
-  --color-card-foreground: oklch(0.18 0.02 260);
-  --color-primary: oklch(0.45 0.18 265);
+  --color-card-foreground: oklch(0.17 0.02 265);
+  --color-primary: oklch(0.48 0.2 265);
   --color-primary-foreground: oklch(0.99 0 0);
-  --color-secondary: oklch(0.96 0.01 265);
+  --color-secondary: oklch(0.965 0.012 265);
   --color-secondary-foreground: oklch(0.28 0.04 265);
-  --color-muted: oklch(0.96 0.01 265);
-  --color-muted-foreground: oklch(0.5 0.02 260);
-  --color-accent: oklch(0.94 0.03 265);
+  --color-muted: oklch(0.96 0.008 265);
+  --color-muted-foreground: oklch(0.48 0.02 265);
+  --color-accent: oklch(0.955 0.02 265);
   --color-accent-foreground: oklch(0.28 0.04 265);
   --color-destructive: oklch(0.55 0.22 25);
-  --color-border: oklch(0.9 0.01 265);
-  --color-input: oklch(0.9 0.01 265);
-  --color-ring: oklch(0.45 0.18 265);
-  --color-sidebar: oklch(0.22 0.06 265);
-  --color-sidebar-foreground: oklch(0.92 0.01 265);
-  --color-sidebar-accent: oklch(0.3 0.07 265);
-  --color-sidebar-border: oklch(0.32 0.06 265);
+  --color-success: oklch(0.55 0.16 155);
+  --color-warning: oklch(0.72 0.15 75);
+  --color-border: oklch(0.91 0.01 265);
+  --color-input: oklch(0.91 0.01 265);
+  --color-ring: oklch(0.48 0.2 265);
+  --color-sidebar: oklch(0.19 0.045 265);
+  --color-sidebar-foreground: oklch(0.93 0.01 265);
+  --color-sidebar-accent: oklch(0.28 0.07 265);
+  --color-sidebar-border: oklch(0.28 0.05 265);
   --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1rem;
+  --shadow-xs: 0 1px 2px oklch(0.2 0.02 265 / 0.04);
+  --shadow-sm: 0 1px 3px oklch(0.2 0.02 265 / 0.06), 0 1px 2px oklch(0.2 0.02 265 / 0.04);
+  --shadow-md: 0 4px 6px -1px oklch(0.2 0.02 265 / 0.07), 0 2px 4px -2px oklch(0.2 0.02 265 / 0.05);
+  --shadow-lg: 0 10px 15px -3px oklch(0.2 0.02 265 / 0.08), 0 4px 6px -4px oklch(0.2 0.02 265 / 0.05);
+  --shadow-card: 0 1px 2px oklch(0.2 0.02 265 / 0.04), 0 8px 24px -8px oklch(0.35 0.08 265 / 0.1);
 }
 
 * {
   @apply border-border;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   @apply bg-background text-foreground antialiased;
-  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-family: "Plus Jakarta Sans", "Inter", system-ui, -apple-system, sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
 #root {
   min-height: 100vh;
+}
+
+/* Dashboard shell */
+.app-mesh-bg {
+  background-color: var(--color-background);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, oklch(0.55 0.15 265 / 0.08), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 0%, oklch(0.6 0.12 290 / 0.06), transparent),
+    radial-gradient(ellipse 50% 30% at 0% 100%, oklch(0.55 0.1 240 / 0.05), transparent);
+}
+
+.glass-panel {
+  @apply border bg-card/80 backdrop-blur-xl;
+  box-shadow: var(--shadow-card);
+}
+
+.elevated-card {
+  @apply rounded-xl border bg-card transition-all duration-200;
+  box-shadow: var(--shadow-card);
+}
+
+.elevated-card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.stat-card {
+  @apply relative overflow-hidden rounded-xl border bg-card p-5 transition-all duration-200;
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-card:hover {
+  @apply -translate-y-0.5 border-primary/20;
+  box-shadow: var(--shadow-md);
+}
+
+.stat-card-icon {
+  @apply flex h-10 w-10 items-center justify-center rounded-xl;
+}
+
+.data-surface {
+  @apply overflow-hidden rounded-xl border bg-card;
+  box-shadow: var(--shadow-xs);
+}
+
+.data-table thead {
+  @apply bg-muted/50;
+}
+
+.data-table th {
+  @apply px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-foreground;
+}
+
+.data-table td {
+  @apply border-t px-4 py-3 text-sm;
+}
+
+.data-table tbody tr {
+  @apply transition-colors hover:bg-muted/30;
+}
+
+.page-header {
+  @apply relative overflow-hidden rounded-2xl border bg-card p-6 lg:p-8;
+  box-shadow: var(--shadow-card);
+}
+
+.page-header::before {
+  content: "";
+  @apply pointer-events-none absolute inset-0 opacity-60;
+  background: linear-gradient(
+    135deg,
+    oklch(0.48 0.2 265 / 0.06) 0%,
+    transparent 50%,
+    oklch(0.6 0.12 290 / 0.04) 100%
+  );
+}
+
+.sidebar-nav-active {
+  @apply relative bg-sidebar-accent text-white shadow-md;
+}
+
+.sidebar-nav-active::before {
+  content: "";
+  @apply absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-primary;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-border;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-muted-foreground/30;
+}
+
+/* Focus ring utility */
+.focus-ring {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
 }
