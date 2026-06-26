@@ -15,13 +15,40 @@ const defaultClientUrl = 'http://localhost:5173'
 function parseClientUrls(value) {
   const urls = (value || defaultClientUrl)
     .split(',')
-    .map((url) => url.trim())
+    .map((url) => url.trim().replace(/\/$/, ''))
     .filter(Boolean)
 
   return [...new Set(urls)]
 }
 
+function isAllowedOrigin(origin, allowedUrls) {
+  if (!origin) return true
+
+  const normalized = origin.replace(/\/$/, '')
+  if (allowedUrls.includes(normalized)) return true
+
+  // Allow any Netlify site when explicitly enabled (e.g. preview deploys)
+  if (process.env.CORS_ALLOW_NETLIFY === 'true' && /\.netlify\.app$/.test(normalized)) {
+    return true
+  }
+
+  return false
+}
+
 const clientUrls = parseClientUrls(process.env.CLIENT_URL)
+
+export function corsOriginCheck(origin, callback) {
+  if (isAllowedOrigin(origin, clientUrls)) {
+    callback(null, true)
+    return
+  }
+
+  if (process.env.NODE_ENV !== 'production') {
+    console.warn(`CORS blocked origin: ${origin}`)
+  }
+
+  callback(null, false)
+}
 
 export const env = {
   port: Number(process.env.PORT) || 5000,

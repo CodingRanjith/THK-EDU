@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import { env } from './config/env.js'
+import { env, corsOriginCheck } from './config/env.js'
 import { connectDatabase } from './config/database.js'
 import authRoutes from './routes/authRoutes.js'
 import adminRoutes from './routes/adminRoutes.js'
@@ -14,7 +14,7 @@ const app = express()
 
 app.use(
   cors({
-    origin: env.clientUrls,
+    origin: corsOriginCheck,
     credentials: true,
   })
 )
