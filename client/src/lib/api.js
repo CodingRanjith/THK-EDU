@@ -1,15 +1,8 @@
 import axios from 'axios'
+import { API_URLS } from '../config/api.js'
 
-const DEFAULT_API_URLS =
-  'http://localhost:5000/api,https://thk-edu.onrender.com/api'
-
-function parseApiUrls(value) {
-  const urls = (value || DEFAULT_API_URLS)
-    .split(',')
-    .map((url) => url.trim())
-    .filter(Boolean)
-
-  return [...new Set(urls)]
+function parseApiUrls(urls) {
+  return [...new Set((urls || []).map((url) => url.trim()).filter(Boolean))]
 }
 
 function isLocalHost(hostname) {
@@ -25,7 +18,7 @@ function isLocalApiUrl(url) {
 }
 
 function resolveApiUrl() {
-  const urls = parseApiUrls(import.meta.env.VITE_API_URL)
+  const urls = parseApiUrls(API_URLS)
 
   if (urls.length === 1) {
     return urls[0]
