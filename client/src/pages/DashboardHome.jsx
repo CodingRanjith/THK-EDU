@@ -21,6 +21,7 @@ import { PageHeader } from '@/components/ui/page'
 import { adminApi } from '@/lib/api'
 import { useAuth } from '@/context/AuthContext'
 import { cn } from '@/lib/utils'
+import { BRAND } from '@/config/brand'
 
 const statConfig = [
   { key: 'students', label: 'Total Students', icon: Users, color: 'bg-sky-500/10 text-sky-600' },
@@ -55,7 +56,7 @@ export function DashboardHome() {
   return (
     <div className="space-y-8">
       <PageHeader
-        title={`Welcome back, ${user?.name?.split(' ')[0] || 'Admin'}`}
+        title={`${BRAND.name} — Welcome, ${user?.name?.split(' ')[0] || 'Admin'}`}
         description="Your unified command center for education, IT, HR, finance, and operations."
       >
         <Button variant="outline" size="sm" asChild>

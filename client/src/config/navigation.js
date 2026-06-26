@@ -20,7 +20,7 @@ import {
 } from 'lucide-react'
 
 export const sidebarNavItems = [
-  { title: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+  { title: 'Techackode', href: '/dashboard', icon: LayoutDashboard },
   {
     title: 'IT Solution',
     icon: Briefcase,

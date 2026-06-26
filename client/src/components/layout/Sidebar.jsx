@@ -8,6 +8,7 @@ import {
   getExpandedGroupForPath,
 } from '@/config/navigation'
 import { useAuth } from '@/context/AuthContext'
+import { BRAND } from '@/config/brand'
 
 export function Sidebar({ collapsed = false }) {
   const { user } = useAuth()
@@ -45,10 +46,10 @@ export function Sidebar({ collapsed = false }) {
         </div>
         {!collapsed && (
           <div className="min-w-0">
-            <p className="truncate text-sm font-bold tracking-tight">Techackode</p>
+            <p className="truncate text-sm font-bold tracking-tight">{BRAND.name}</p>
             <p className="flex items-center gap-1 truncate text-xs text-sidebar-foreground/60">
               <Sparkles className="h-3 w-3" />
-              Edutech Platform
+              {BRAND.tagline}
             </p>
           </div>
         )}
@@ -142,7 +143,7 @@ export function Sidebar({ collapsed = false }) {
             <p className="truncate text-xs capitalize text-sidebar-foreground/60">{user.role}</p>
           </div>
           <p className="mt-3 text-center text-[10px] text-sidebar-foreground/40">
-            © {new Date().getFullYear()} Techackode
+            © {new Date().getFullYear()} {BRAND.copyright}
           </p>
         </div>
       )}

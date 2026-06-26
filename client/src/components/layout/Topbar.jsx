@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Bell, ChevronDown, LogOut, Menu, Search, Settings, User } from 'lucide-react'
+import { Bell, ChevronDown, GraduationCap, LogOut, Menu, Search, Settings, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useAuth } from '@/context/AuthContext'
+import { BRAND } from '@/config/brand'
 
 export function Topbar({ onToggleSidebar }) {
   const { user, logout } = useAuth()
@@ -36,6 +37,13 @@ export function Topbar({ onToggleSidebar }) {
       <Button variant="ghost" size="icon" onClick={onToggleSidebar} className="shrink-0 rounded-xl">
         <Menu className="h-5 w-5" />
       </Button>
+
+      <div className="flex items-center gap-2 lg:hidden">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+          <GraduationCap className="h-4 w-4" />
+        </div>
+        <span className="text-sm font-bold tracking-tight">{BRAND.name}</span>
+      </div>
 
       <div className="relative hidden max-w-lg flex-1 md:block">
         <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />

@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { useAuth } from '@/context/AuthContext'
+import { BRAND } from '@/config/brand'
 
 export function LoginPage() {
   const { login, isAuthenticated, loading } = useAuth()
@@ -43,10 +44,10 @@ export function LoginPage() {
             <GraduationCap className="h-6 w-6" />
           </div>
           <div>
-            <h1 className="text-xl font-bold tracking-tight">Techackode</h1>
+            <h1 className="text-xl font-bold tracking-tight">{BRAND.loginTitle}</h1>
             <p className="flex items-center gap-1 text-sm text-sidebar-foreground/70">
               <Sparkles className="h-3.5 w-3.5" />
-              Edutech Management Platform
+              {BRAND.title}
             </p>
           </div>
         </div>
@@ -72,7 +73,7 @@ export function LoginPage() {
         </div>
 
         <p className="relative text-sm text-sidebar-foreground/50">
-          © {new Date().getFullYear()} Techackode Edutech
+          © {new Date().getFullYear()} {BRAND.copyright}
         </p>
       </div>
 
@@ -84,7 +85,7 @@ export function LoginPage() {
             </div>
             <div>
               <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
-              <CardDescription className="mt-1.5">Sign in to your Techackode admin workspace</CardDescription>
+              <CardDescription className="mt-1.5">Sign in to {BRAND.title}</CardDescription>
             </div>
           </CardHeader>
           <CardContent>
