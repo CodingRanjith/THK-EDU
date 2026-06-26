@@ -13,6 +13,7 @@ async function setup() {
     'it-team-schema.sql',
     'hr-schema.sql',
     'it-assets-schema.sql',
+    'finance-schema.sql',
   ]
 
   for (const file of schemaFiles) {

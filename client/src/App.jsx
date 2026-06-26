@@ -22,6 +22,9 @@ import { EmployeesPage } from '@/pages/hr/EmployeesPage'
 import { AttendancePage } from '@/pages/hr/AttendancePage'
 import { HardwareAssetsPage } from '@/pages/it-assets/HardwareAssetsPage'
 import { SoftwareAssetsPage } from '@/pages/it-assets/SoftwareAssetsPage'
+import { AccountReceivablePage } from '@/pages/finance/AccountReceivablePage'
+import { AccountPayablePage } from '@/pages/finance/AccountPayablePage'
+import { FinanceReportPage } from '@/pages/finance/FinanceReportPage'
 import { getPlaceholderRoutes } from '@/config/navigation'
 
 const placeholderRoutes = getPlaceholderRoutes()
@@ -80,6 +83,11 @@ export default function App() {
               <Route path="/dashboard/it-assets" element={<Navigate to="hardware" replace />} />
               <Route path="/dashboard/it-assets/hardware" element={<HardwareAssetsPage />} />
               <Route path="/dashboard/it-assets/software" element={<SoftwareAssetsPage />} />
+
+              <Route path="/dashboard/finance" element={<Navigate to="receivable" replace />} />
+              <Route path="/dashboard/finance/receivable" element={<AccountReceivablePage />} />
+              <Route path="/dashboard/finance/payable" element={<AccountPayablePage />} />
+              <Route path="/dashboard/finance/report" element={<FinanceReportPage />} />
 
               {placeholderRoutes.map((item) => (
                 <Route key={item.href} path={item.href} element={<PlaceholderPage />} />

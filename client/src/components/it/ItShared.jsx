@@ -142,6 +142,9 @@ export function StatusBadge({ status }) {
     retired: 'bg-gray-100 text-gray-700',
     expired: 'bg-red-100 text-red-700',
     trial: 'bg-purple-100 text-purple-700',
+    received: 'bg-green-100 text-green-700',
+    paid: 'bg-green-100 text-green-700',
+    overdue: 'bg-orange-100 text-orange-700',
   }
 
   const label = String(status || '').replace(/_/g, ' ')

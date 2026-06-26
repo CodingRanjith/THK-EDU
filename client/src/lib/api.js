@@ -150,4 +150,22 @@ export const assetsApi = {
   deleteSoftware: (id) => api.delete(`/assets/software/${id}`),
 }
 
+export const financeApi = {
+  listReceivables: (params) => api.get('/finance/receivables', { params }),
+  getReceivableStats: (params) => api.get('/finance/receivables/stats', { params }),
+  getReceivable: (id) => api.get(`/finance/receivables/${id}`),
+  createReceivable: (data) => api.post('/finance/receivables', data),
+  updateReceivable: (id, data) => api.put(`/finance/receivables/${id}`, data),
+  deleteReceivable: (id) => api.delete(`/finance/receivables/${id}`),
+
+  listPayables: (params) => api.get('/finance/payables', { params }),
+  getPayableStats: (params) => api.get('/finance/payables/stats', { params }),
+  getPayable: (id) => api.get(`/finance/payables/${id}`),
+  createPayable: (data) => api.post('/finance/payables', data),
+  updatePayable: (id, data) => api.put(`/finance/payables/${id}`, data),
+  deletePayable: (id) => api.delete(`/finance/payables/${id}`),
+
+  getReport: (params) => api.get('/finance/reports', { params }),
+}
+
 export default api

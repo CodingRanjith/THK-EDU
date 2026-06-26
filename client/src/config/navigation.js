@@ -16,6 +16,7 @@ import {
   FolderOpen,
   Briefcase,
   Monitor,
+  Wallet,
 } from 'lucide-react'
 
 export const sidebarNavItems = [
@@ -75,6 +76,16 @@ export const sidebarNavItems = [
       { title: 'Software Management', href: '/dashboard/it-assets/software' },
     ],
   },
+  {
+    title: 'Finance',
+    href: '/dashboard/finance',
+    icon: Wallet,
+    children: [
+      { title: 'Account Receivable', href: '/dashboard/finance/receivable' },
+      { title: 'Account Payable', href: '/dashboard/finance/payable' },
+      { title: 'Overall Account Report', href: '/dashboard/finance/report' },
+    ],
+  },
 ]
 
 const RESERVED_PATHS = new Set([
@@ -128,7 +139,8 @@ export function getPlaceholderRoutes() {
           child.href.startsWith('/dashboard/documents') ||
           child.href.startsWith('/dashboard/it') ||
           child.href.startsWith('/dashboard/hr') ||
-          child.href.startsWith('/dashboard/it-assets')
+          child.href.startsWith('/dashboard/it-assets') ||
+          child.href.startsWith('/dashboard/finance')
         ) {
           continue
         }
