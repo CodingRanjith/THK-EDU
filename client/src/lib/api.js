@@ -1,8 +1,44 @@
 import axios from 'axios'
 
-const API_URL =
-  import.meta.env.VITE_API_URL ||
-  (import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://thk-edu.onrender.com/api')
+const DEFAULT_API_URLS =
+  'http://localhost:5000/api,https://thk-edu.onrender.com/api'
+
+function parseApiUrls(value) {
+  const urls = (value || DEFAULT_API_URLS)
+    .split(',')
+    .map((url) => url.trim())
+    .filter(Boolean)
+
+  return [...new Set(urls)]
+}
+
+function isLocalHost(hostname) {
+  return hostname === 'localhost' || hostname === '127.0.0.1'
+}
+
+function isLocalApiUrl(url) {
+  try {
+    return isLocalHost(new URL(url).hostname)
+  } catch {
+    return url.includes('localhost') || url.includes('127.0.0.1')
+  }
+}
+
+function resolveApiUrl() {
+  const urls = parseApiUrls(import.meta.env.VITE_API_URL)
+
+  if (urls.length === 1) {
+    return urls[0]
+  }
+
+  const localUrl = urls.find(isLocalApiUrl)
+  const prodUrl = urls.find((url) => !isLocalApiUrl(url))
+  const onLocalHost = typeof window !== 'undefined' && isLocalHost(window.location.hostname)
+
+  return onLocalHost ? localUrl || urls[0] : prodUrl || urls[urls.length - 1]
+}
+
+const API_URL = resolveApiUrl()
 
 const api = axios.create({
   baseURL: API_URL,

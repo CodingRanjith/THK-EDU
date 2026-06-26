@@ -3,9 +3,17 @@ import { env } from './env.js'
 
 const { Pool } = pg
 
-export const pool = new Pool({
-  connectionString: env.databaseUrl,
-})
+function getPoolConfig() {
+  const config = { connectionString: env.databaseUrl }
+
+  if (env.databaseUrl?.includes('supabase')) {
+    config.ssl = { rejectUnauthorized: false }
+  }
+
+  return config
+}
+
+export const pool = new Pool(getPoolConfig())
 
 pool.on('error', (err) => {
   console.error('Unexpected PostgreSQL pool error:', err)
