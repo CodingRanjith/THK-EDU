@@ -52,6 +52,8 @@ export const sidebarNavItems = [
     icon: UserCog,
     children: [
       { title: 'User Management', href: '/dashboard/users', adminOnly: true },
+      { title: 'Employee Management', href: '/dashboard/hr/employees', adminOnly: true },
+      { title: 'Attendance Management', href: '/dashboard/hr/attendance', adminOnly: true },
       { title: 'Settings', href: '/dashboard/settings' },
     ],
   },
@@ -124,7 +126,9 @@ export function getPlaceholderRoutes() {
           child.adminOnly ||
           RESERVED_PATHS.has(child.href) ||
           child.href.startsWith('/dashboard/documents') ||
-          child.href.startsWith('/dashboard/it')
+          child.href.startsWith('/dashboard/it') ||
+          child.href.startsWith('/dashboard/hr') ||
+          child.href.startsWith('/dashboard/it-assets')
         ) {
           continue
         }

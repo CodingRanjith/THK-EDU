@@ -136,6 +136,12 @@ export function StatusBadge({ status }) {
     planning: 'bg-purple-100 text-purple-700',
     completed: 'bg-green-100 text-green-700',
     cancelled: 'bg-red-100 text-red-700',
+    available: 'bg-blue-100 text-blue-700',
+    assigned: 'bg-green-100 text-green-700',
+    in_repair: 'bg-amber-100 text-amber-700',
+    retired: 'bg-gray-100 text-gray-700',
+    expired: 'bg-red-100 text-red-700',
+    trial: 'bg-purple-100 text-purple-700',
   }
 
   const label = String(status || '').replace(/_/g, ' ')

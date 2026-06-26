@@ -18,6 +18,10 @@ import { ProposalsPage } from '@/pages/it/ProposalsPage'
 import { ProjectsPage } from '@/pages/it/ProjectsPage'
 import { TeamManagementPage } from '@/pages/it/TeamManagementPage'
 import { ProjectTeamPage } from '@/pages/it/ProjectTeamPage'
+import { EmployeesPage } from '@/pages/hr/EmployeesPage'
+import { AttendancePage } from '@/pages/hr/AttendancePage'
+import { HardwareAssetsPage } from '@/pages/it-assets/HardwareAssetsPage'
+import { SoftwareAssetsPage } from '@/pages/it-assets/SoftwareAssetsPage'
 import { getPlaceholderRoutes } from '@/config/navigation'
 
 const placeholderRoutes = getPlaceholderRoutes()
@@ -55,6 +59,27 @@ export default function App() {
               <Route path="/dashboard/it/projects" element={<ProjectsPage />} />
               <Route path="/dashboard/it/team-management" element={<TeamManagementPage />} />
               <Route path="/dashboard/it/team-management/:projectId" element={<ProjectTeamPage />} />
+
+              <Route
+                path="/dashboard/hr/employees"
+                element={
+                  <AdminOnly>
+                    <EmployeesPage />
+                  </AdminOnly>
+                }
+              />
+              <Route
+                path="/dashboard/hr/attendance"
+                element={
+                  <AdminOnly>
+                    <AttendancePage />
+                  </AdminOnly>
+                }
+              />
+
+              <Route path="/dashboard/it-assets" element={<Navigate to="hardware" replace />} />
+              <Route path="/dashboard/it-assets/hardware" element={<HardwareAssetsPage />} />
+              <Route path="/dashboard/it-assets/software" element={<SoftwareAssetsPage />} />
 
               {placeholderRoutes.map((item) => (
                 <Route key={item.href} path={item.href} element={<PlaceholderPage />} />

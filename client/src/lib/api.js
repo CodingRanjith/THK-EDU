@@ -121,4 +121,33 @@ export const itApi = {
   deleteAllocation: (id) => api.delete(`/it/team/allocations/${id}`),
 }
 
+export const hrApi = {
+  listEmployees: (params) => api.get('/hr/employees', { params }),
+  getEmployeeStats: () => api.get('/hr/employees/stats'),
+  getEmployee: (id) => api.get(`/hr/employees/${id}`),
+  createEmployee: (data) => api.post('/hr/employees', data),
+  updateEmployee: (id, data) => api.put(`/hr/employees/${id}`, data),
+  deleteEmployee: (id) => api.delete(`/hr/employees/${id}`),
+
+  getMonthlyAttendance: (params) => api.get('/hr/attendance', { params }),
+  setAttendance: (data) => api.post('/hr/attendance', data),
+  bulkSetAttendance: (data) => api.post('/hr/attendance/bulk', data),
+}
+
+export const assetsApi = {
+  listHardware: (params) => api.get('/assets/hardware', { params }),
+  getHardwareStats: () => api.get('/assets/hardware/stats'),
+  getHardware: (id) => api.get(`/assets/hardware/${id}`),
+  createHardware: (data) => api.post('/assets/hardware', data),
+  updateHardware: (id, data) => api.put(`/assets/hardware/${id}`, data),
+  deleteHardware: (id) => api.delete(`/assets/hardware/${id}`),
+
+  listSoftware: (params) => api.get('/assets/software', { params }),
+  getSoftwareStats: () => api.get('/assets/software/stats'),
+  getSoftware: (id) => api.get(`/assets/software/${id}`),
+  createSoftware: (data) => api.post('/assets/software', data),
+  updateSoftware: (id, data) => api.put(`/assets/software/${id}`, data),
+  deleteSoftware: (id) => api.delete(`/assets/software/${id}`),
+}
+
 export default api

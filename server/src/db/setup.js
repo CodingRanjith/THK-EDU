@@ -6,7 +6,14 @@ import { pool } from '../config/database.js'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 async function setup() {
-  const schemaFiles = ['schema.sql', 'documents-schema.sql', 'it-schema.sql', 'it-team-schema.sql']
+  const schemaFiles = [
+    'schema.sql',
+    'documents-schema.sql',
+    'it-schema.sql',
+    'it-team-schema.sql',
+    'hr-schema.sql',
+    'it-assets-schema.sql',
+  ]
 
   for (const file of schemaFiles) {
     const schemaPath = path.join(__dirname, file)
