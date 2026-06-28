@@ -12,7 +12,7 @@ import { documentsApi } from '@/lib/api'
 import { downloadExcelTemplate, getExcelColumns, parseExcelFile } from '@/lib/excelBulk'
 import { useAlert } from '@/context/AlertContext'
 
-const LETTERHEAD_DOC_TYPES = ['intern_offer_letter', 'intern_experience_letter']
+const LETTERHEAD_DOC_TYPES = ['intern_offer_letter', 'intern_experience_letter', 'internship_certificate']
 
 function buildBulkAlert(results, summary) {
   const details = results.map((r) =>

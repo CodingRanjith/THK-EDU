@@ -1,4 +1,4 @@
-import { buildInternOfferLetterBody, buildInternExperienceLetterBody, wrapTechackodeLetterhead } from '../../../shared/internOfferLetterContent.js'
+import { buildInternOfferLetterBody, buildInternExperienceLetterBody, buildInternshipCertificateBody, wrapTechackodeLetterhead } from '../../../shared/internOfferLetterContent.js'
 import letterheadImg from '@/assets/head.png'
 
 function escapeHtml(str = '') {
@@ -80,19 +80,10 @@ const templates = {
       ${letterFooter()}
     </div>`,
 
-  internship_certificate: (d, num) => `
-    <div style="font-family:Georgia,serif;max-width:700px;margin:0 auto;padding:40px;color:#1e293b;line-height:1.7;text-align:center;">
-      ${letterHeader(num, d.issueDate)}
-      <h2 style="color:#1e3a8a;margin:24px 0;font-size:26px;">INTERNSHIP CERTIFICATE</h2>
-      <p>This certifies that</p>
-      <h3 style="font-size:24px;color:#1e3a8a;margin:16px 0;">${escapeHtml(d.recipientName)}</h3>
-      <p>successfully completed an internship as <strong>${escapeHtml(d.internshipRole)}</strong></p>
-      <p>Project: <strong>${escapeHtml(d.projectTitle)}</strong></p>
-      <p>Period: <strong>${escapeHtml(d.startDate)}</strong> to <strong>${escapeHtml(d.endDate)}</strong></p>
-      <p style="margin-top:16px;text-align:left;">Performance: ${escapeHtml(d.performance || 'Satisfactory performance throughout the internship period.')}</p>
-      <p style="margin-top:32px;">Authorized by<br/><strong>${escapeHtml(d.authorizedSignatory || 'Internship Coordinator')}</strong><br/>Techackode Edutech</p>
-      ${letterFooter()}
-    </div>`,
+  internship_certificate: (d, num) => {
+    const body = buildInternshipCertificateBody(d)
+    return wrapTechackodeLetterhead(body, letterheadImg)
+  },
 
   appointment_letter: (d, num) => `
     <div style="font-family:Georgia,serif;max-width:700px;margin:0 auto;padding:40px;color:#1e293b;line-height:1.7;">

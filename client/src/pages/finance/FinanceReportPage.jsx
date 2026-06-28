@@ -11,7 +11,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { StatsCards } from '@/components/it/ItShared'
-import { FinancePeriodFilter, getDefaultPeriod, periodToQuery, formatPeriodLabel } from '@/components/finance/FinancePeriodFilter'
+import { FinancePeriodFilter, getDefaultReportPeriod, periodToQuery, formatPeriodLabel } from '@/components/finance/FinancePeriodFilter'
 import { financeApi } from '@/lib/api'
 import { exportToExcel, formatCurrency, formatDate, formatLabel } from '@/lib/itUtils'
 
@@ -23,8 +23,28 @@ function formatMonthPeriod(period) {
   return `${MONTH_NAMES[parseInt(month, 10) - 1]} ${year}`
 }
 
+function fillYearMonths(breakdown, year) {
+  const map = new Map((breakdown || []).map((row) => [row.period, row]))
+  const emptyRow = (period) => ({
+    period,
+    receivableTotal: 0,
+    receivableReceived: 0,
+    receivablePending: 0,
+    payableTotal: 0,
+    payablePaid: 0,
+    payablePending: 0,
+    netReceived: 0,
+    netOutstanding: 0,
+  })
+
+  return Array.from({ length: 12 }, (_, index) => {
+    const period = `${year}-${String(index + 1).padStart(2, '0')}`
+    return map.get(period) || emptyRow(period)
+  })
+}
+
 export function FinanceReportPage() {
-  const [period, setPeriod] = useState(getDefaultPeriod)
+  const [period, setPeriod] = useState(getDefaultReportPeriod)
   const [report, setReport] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -44,6 +64,10 @@ export function FinanceReportPage() {
   }, [fetchReport])
 
   const summary = report?.summary
+  const monthlyBreakdown =
+    period.periodType === 'year' && report
+      ? fillYearMonths(report.monthlyBreakdown, period.year)
+      : report?.monthlyBreakdown || []
 
   const statCards = summary
     ? [
@@ -55,7 +79,7 @@ export function FinanceReportPage() {
     : []
 
   const handleExportBreakdown = () => {
-    if (!report?.monthlyBreakdown?.length) return
+    if (!monthlyBreakdown.length) return
     exportToExcel({
       filename: `finance-report-${formatPeriodLabel(period).replace(/\s+/g, '-')}.xlsx`,
       sheetName: 'Monthly Breakdown',
@@ -70,7 +94,7 @@ export function FinanceReportPage() {
         { key: 'netReceived', label: 'Net Cash Flow', getValue: (r) => formatCurrency(r.netReceived) },
         { key: 'netOutstanding', label: 'Net Outstanding', getValue: (r) => formatCurrency(r.netOutstanding) },
       ],
-      rows: report.monthlyBreakdown,
+      rows: monthlyBreakdown,
     })
   }
 
@@ -83,7 +107,7 @@ export function FinanceReportPage() {
             Combined receivable & payable summary — {formatPeriodLabel(period)}
           </p>
         </div>
-        <Button variant="outline" onClick={handleExportBreakdown} disabled={!report?.monthlyBreakdown?.length}>
+        <Button variant="outline" onClick={handleExportBreakdown} disabled={!monthlyBreakdown.length}>
           <FileSpreadsheet className="h-4 w-4" />
           Export Report
         </Button>
@@ -91,7 +115,11 @@ export function FinanceReportPage() {
 
       <Card>
         <CardContent className="pt-6">
-          <FinancePeriodFilter period={period} onChange={setPeriod} />
+          <FinancePeriodFilter
+            period={period}
+            onChange={setPeriod}
+            periodTypeOrder={['year', 'month', 'range']}
+          />
         </CardContent>
       </Card>
 
@@ -135,14 +163,18 @@ export function FinanceReportPage() {
             </Card>
           </div>
 
-          {report.monthlyBreakdown?.length > 0 && (
+          {monthlyBreakdown.length > 0 && (
             <Card>
               <CardHeader>
                 <CardTitle className="text-base flex items-center gap-2">
                   <BarChart3 className="h-4 w-4" />
                   {period.periodType === 'year' ? 'Month-wise Breakdown' : 'Period Breakdown'}
                 </CardTitle>
-                <CardDescription>Receivable vs payable by month within selected period</CardDescription>
+                <CardDescription>
+                  {period.periodType === 'year'
+                    ? `Receivable vs payable for each month in ${period.year}`
+                    : 'Receivable vs payable by month within selected period'}
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="overflow-x-auto rounded-md border">
@@ -161,7 +193,7 @@ export function FinanceReportPage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {report.monthlyBreakdown.map((row) => (
+                      {monthlyBreakdown.map((row) => (
                         <tr key={row.period} className="border-b last:border-0">
                           <td className="px-3 py-3 font-medium">{formatMonthPeriod(row.period)}</td>
                           <td className="px-3 py-3">{formatCurrency(row.receivableTotal)}</td>

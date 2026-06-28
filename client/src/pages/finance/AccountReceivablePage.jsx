@@ -13,11 +13,12 @@ import {
   StatusBadge,
 } from '@/components/it/ItShared'
 import { FinancePeriodFilter, getDefaultPeriod, periodToQuery, formatPeriodLabel } from '@/components/finance/FinancePeriodFilter'
-import { financeApi } from '@/lib/api'
+import { financeApi, itApi } from '@/lib/api'
 import { exportToExcel, formatCurrency, formatDate, formatLabel } from '@/lib/itUtils'
 import { useAlert } from '@/context/AlertContext'
 
 const EMPTY_FORM = {
+  clientId: '',
   partyName: '',
   invoiceNumber: '',
   description: '',
@@ -46,8 +47,10 @@ const EXPORT_COLUMNS = [
   { key: 'category', label: 'Category' },
 ]
 
-function mapToForm(entry) {
+function mapToForm(entry, clients = []) {
+  const matched = clients.find((c) => c.client_name === entry.party_name)
   return {
+    clientId: matched?.id || '',
     partyName: entry.party_name || '',
     invoiceNumber: entry.invoice_number || '',
     description: entry.description || '',
@@ -66,6 +69,7 @@ export function AccountReceivablePage() {
   const { showSuccess, showError } = useAlert()
   const [period, setPeriod] = useState(getDefaultPeriod)
   const [entries, setEntries] = useState([])
+  const [clients, setClients] = useState([])
   const [total, setTotal] = useState(0)
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -98,24 +102,43 @@ export function AccountReceivablePage() {
     fetchData()
   }, [fetchData])
 
+  useEffect(() => {
+    itApi.listClientsBrief()
+      .then((res) => setClients(res.data.clients))
+      .catch(() => setClients([]))
+  }, [])
+
+  const handleClientChange = (clientId) => {
+    const client = clients.find((c) => String(c.id) === String(clientId))
+    setForm({
+      ...form,
+      clientId,
+      partyName: client ? client.client_name : '',
+    })
+  }
+
   const openCreate = () => {
     setForm({ ...EMPTY_FORM, transactionDate: new Date().toISOString().slice(0, 10) })
     setModal({ open: true, mode: 'create', item: null })
   }
 
   const openView = (item) => {
-    setForm(mapToForm(item))
+    setForm(mapToForm(item, clients))
     setModal({ open: true, mode: 'view', item })
   }
 
   const openEdit = (item) => {
-    setForm(mapToForm(item))
+    setForm(mapToForm(item, clients))
     setModal({ open: true, mode: 'edit', item })
   }
 
   const closeModal = () => setModal({ open: false, mode: 'create', item: null })
 
   const handleSubmit = async () => {
+    if (!form.clientId) {
+      showError('Validation', 'Please select a client.')
+      return
+    }
     if (!form.partyName.trim()) {
       showError('Validation', 'Party name is required.')
       return
@@ -285,9 +308,25 @@ export function AccountReceivablePage() {
           {modal.mode !== 'create' && (
             <FormField label="Entry Number"><FormInput value={modal.item?.entry_number || ''} disabled /></FormField>
           )}
-          <FormField label="Party / Client Name" required>
-            <FormInput value={form.partyName} onChange={(e) => setForm({ ...form, partyName: e.target.value })} disabled={isView} />
+          <FormField label="Client" required>
+            <FormSelect
+              value={form.clientId}
+              onChange={(e) => handleClientChange(e.target.value)}
+              disabled={isView}
+            >
+              <option value="">Select client</option>
+              {clients.map((client) => (
+                <option key={client.id} value={client.id}>
+                  {client.client_name} ({client.client_number})
+                </option>
+              ))}
+            </FormSelect>
           </FormField>
+          {isView && !form.clientId && form.partyName && (
+            <FormField label="Party / Client Name">
+              <FormInput value={form.partyName} disabled />
+            </FormField>
+          )}
           <FormField label="Invoice Number">
             <FormInput value={form.invoiceNumber} onChange={(e) => setForm({ ...form, invoiceNumber: e.target.value })} disabled={isView} />
           </FormField>

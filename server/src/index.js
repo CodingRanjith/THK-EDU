@@ -9,6 +9,7 @@ import itRoutes from './routes/itRoutes.js'
 import hrRoutes from './routes/hrRoutes.js'
 import assetsRoutes from './routes/assetsRoutes.js'
 import financeRoutes from './routes/financeRoutes.js'
+import dashboardRoutes from './routes/dashboardRoutes.js'
 
 const app = express()
 
@@ -35,6 +36,7 @@ app.use('/api/it', itRoutes)
 app.use('/api/hr', hrRoutes)
 app.use('/api/assets', assetsRoutes)
 app.use('/api/finance', financeRoutes)
+app.use('/api/dashboard', dashboardRoutes)
 
 app.use((_req, res) => {
   res.status(404).json({ message: 'Route not found' })

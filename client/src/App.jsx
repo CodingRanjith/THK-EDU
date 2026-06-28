@@ -25,6 +25,7 @@ import { SoftwareAssetsPage } from '@/pages/it-assets/SoftwareAssetsPage'
 import { AccountReceivablePage } from '@/pages/finance/AccountReceivablePage'
 import { AccountPayablePage } from '@/pages/finance/AccountPayablePage'
 import { FinanceReportPage } from '@/pages/finance/FinanceReportPage'
+import { NotFoundPage } from '@/pages/NotFoundPage'
 import { getPlaceholderRoutes } from '@/config/navigation'
 
 const placeholderRoutes = getPlaceholderRoutes()
@@ -96,7 +97,7 @@ export default function App() {
           </Route>
 
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
         </AuthProvider>
       </AlertProvider>

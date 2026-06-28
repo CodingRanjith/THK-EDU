@@ -77,17 +77,9 @@ export async function removeUser(req, res) {
   return res.json({ message: 'User deleted' })
 }
 
+import { getDashboardStats as fetchDashboardStats } from '../models/dashboardModel.js'
+
 export async function getDashboardStats(_req, res) {
-  return res.json({
-    stats: {
-      students: 1248,
-      teachers: 86,
-      courses: 42,
-      batches: 18,
-      revenue: '₹12.4L',
-      attendance: '94%',
-      pendingFees: 23,
-      activeExams: 5,
-    },
-  })
+  const stats = await fetchDashboardStats()
+  return res.json({ stats })
 }

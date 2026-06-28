@@ -18,7 +18,7 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { PageHeader } from '@/components/ui/page'
-import { adminApi } from '@/lib/api'
+import { dashboardApi } from '@/lib/api'
 import { useAuth } from '@/context/AuthContext'
 import { cn } from '@/lib/utils'
 import { BRAND } from '@/config/brand'
@@ -41,15 +41,45 @@ const quickLinks = [
   { label: 'HR Employees', href: '/dashboard/hr/employees', icon: Users },
 ]
 
+function formatRelativeTime(dateStr) {
+  const date = new Date(dateStr)
+  const diffMs = Date.now() - date.getTime()
+  const diffMins = Math.floor(diffMs / 60000)
+  const diffHours = Math.floor(diffMs / 3600000)
+  const diffDays = Math.floor(diffMs / 86400000)
+
+  if (diffMins < 1) return 'Just now'
+  if (diffMins < 60) return `${diffMins}m ago`
+  if (diffHours < 24) return `${diffHours}h ago`
+  if (diffDays === 1) return 'Yesterday'
+  if (diffDays < 7) return `${diffDays}d ago`
+  return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })
+}
+
+function StatSkeleton() {
+  return <div className="h-8 w-16 animate-pulse rounded-md bg-muted" />
+}
+
 export function DashboardHome() {
   const { user } = useAuth()
   const [stats, setStats] = useState(null)
+  const [activity, setActivity] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (user?.role === 'admin') {
-      adminApi.getStats().then((res) => setStats(res.data.stats)).catch(() => {})
-    }
-  }, [user])
+    setLoading(true)
+    dashboardApi
+      .get()
+      .then((res) => {
+        setStats(res.data.stats)
+        setActivity(res.data.activity || [])
+      })
+      .catch(() => {
+        setStats(null)
+        setActivity([])
+      })
+      .finally(() => setLoading(false))
+  }, [])
 
   const displayStats = stats || Object.fromEntries(statConfig.map((s) => [s.key, '—']))
 
@@ -73,7 +103,9 @@ export function DashboardHome() {
             <div className="flex items-start justify-between">
               <div className="space-y-2">
                 <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{label}</p>
-                <p className="text-2xl font-bold tracking-tight">{displayStats[key]}</p>
+                <p className="text-2xl font-bold tracking-tight">
+                  {loading ? <StatSkeleton /> : displayStats[key]}
+                </p>
               </div>
               <div className={cn('stat-card-icon group-hover:scale-110', color)}>
                 <Icon className="h-5 w-5" />
@@ -90,23 +122,33 @@ export function DashboardHome() {
             <CardDescription>Latest updates across your institution</CardDescription>
           </CardHeader>
           <CardContent className="space-y-1">
-            {[
-              { text: 'New batch "Web Dev 2026" created', time: '2h ago' },
-              { text: '45 students marked present in Batch A', time: '4h ago' },
-              { text: 'Mid-term exam scheduled for Mathematics', time: 'Yesterday' },
-              { text: 'Fee payment received from 12 students', time: 'Yesterday' },
-            ].map((activity, i) => (
-              <div
-                key={i}
-                className="flex items-center justify-between gap-4 rounded-xl px-3 py-3 transition-colors hover:bg-muted/40"
-              >
-                <div className="flex items-start gap-3">
-                  <div className="mt-2 h-2 w-2 shrink-0 rounded-full bg-primary" />
-                  <p className="text-sm font-medium">{activity.text}</p>
+            {loading ? (
+              Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="flex items-center justify-between gap-4 rounded-xl px-3 py-3">
+                  <div className="h-4 w-3/4 animate-pulse rounded bg-muted" />
+                  <div className="h-3 w-12 animate-pulse rounded bg-muted" />
                 </div>
-                <span className="shrink-0 text-xs text-muted-foreground">{activity.time}</span>
-              </div>
-            ))}
+              ))
+            ) : activity.length === 0 ? (
+              <p className="px-3 py-6 text-center text-sm text-muted-foreground">
+                No recent activity yet. Actions across IT, HR, finance, and documents will appear here.
+              </p>
+            ) : (
+              activity.map((item, i) => (
+                <div
+                  key={`${item.created_at}-${i}`}
+                  className="flex items-center justify-between gap-4 rounded-xl px-3 py-3 transition-colors hover:bg-muted/40"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="mt-2 h-2 w-2 shrink-0 rounded-full bg-primary" />
+                    <p className="text-sm font-medium">{item.text}</p>
+                  </div>
+                  <span className="shrink-0 text-xs text-muted-foreground">
+                    {formatRelativeTime(item.created_at)}
+                  </span>
+                </div>
+              ))
+            )}
           </CardContent>
         </Card>
 

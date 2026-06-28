@@ -11,7 +11,7 @@ import {
 
 function getRecipientName(formData, documentType) {
   if (documentType === 'policy_document') return formData.policyTitle
-  if (documentType === 'intern_offer_letter' || documentType === 'intern_experience_letter') {
+  if (documentType === 'intern_offer_letter' || documentType === 'intern_experience_letter' || documentType === 'internship_certificate') {
     return formData.studentName
   }
   return formData.recipientName
@@ -43,7 +43,7 @@ export async function createSingleDocument(req, res) {
 
   if (!getRecipientName(formData, documentType)) {
     const msg =
-      documentType === 'intern_offer_letter' || documentType === 'intern_experience_letter'
+      documentType === 'intern_offer_letter' || documentType === 'intern_experience_letter' || documentType === 'internship_certificate'
         ? 'Candidate name is required'
         : documentType === 'policy_document'
           ? 'Policy title is required'
@@ -97,7 +97,7 @@ export async function createBulkDocuments(req, res) {
         results.push({
           row: rowNum,
           success: false,
-          error: documentType === 'intern_offer_letter' || documentType === 'intern_experience_letter'
+          error: documentType === 'intern_offer_letter' || documentType === 'intern_experience_letter' || documentType === 'internship_certificate'
             ? 'Intern name is required'
             : 'Recipient name is required',
         })

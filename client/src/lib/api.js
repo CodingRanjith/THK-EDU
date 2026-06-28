@@ -66,6 +66,10 @@ export const authApi = {
   logout: () => api.post('/auth/logout'),
 }
 
+export const dashboardApi = {
+  get: () => api.get('/dashboard'),
+}
+
 export const adminApi = {
   getStats: () => api.get('/admin/stats'),
   getUsers: () => api.get('/admin/users'),

@@ -17,6 +17,17 @@ export function getDefaultPeriod() {
   }
 }
 
+export function getDefaultReportPeriod() {
+  const now = new Date()
+  return {
+    periodType: 'year',
+    year: now.getFullYear(),
+    month: now.getMonth() + 1,
+    startDate: '',
+    endDate: '',
+  }
+}
+
 export function periodToQuery(period) {
   const query = { periodType: period.periodType, year: period.year }
 
@@ -47,8 +58,19 @@ export function formatPeriodLabel(period) {
   return 'Custom range'
 }
 
-export function FinancePeriodFilter({ period, onChange, className = '' }) {
+const PERIOD_TYPE_OPTIONS = [
+  { value: 'month', label: 'Month wise' },
+  { value: 'year', label: 'Year wise' },
+  { value: 'range', label: 'Start to End Date' },
+]
+
+export function FinancePeriodFilter({ period, onChange, className = '', periodTypeOrder }) {
   const years = Array.from({ length: 7 }, (_, i) => new Date().getFullYear() - 3 + i)
+  const orderedPeriodTypes = periodTypeOrder
+    ? periodTypeOrder
+        .map((value) => PERIOD_TYPE_OPTIONS.find((option) => option.value === value))
+        .filter(Boolean)
+    : PERIOD_TYPE_OPTIONS
 
   return (
     <FilterBar className={className}>
@@ -59,9 +81,9 @@ export function FinancePeriodFilter({ period, onChange, className = '' }) {
           value={period.periodType}
           onChange={(e) => onChange({ ...period, periodType: e.target.value })}
         >
-          <option value="month">Month wise</option>
-          <option value="year">Year wise</option>
-          <option value="range">Start to End Date</option>
+          {orderedPeriodTypes.map((option) => (
+            <option key={option.value} value={option.value}>{option.label}</option>
+          ))}
         </select>
       </div>
 

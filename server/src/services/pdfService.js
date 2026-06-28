@@ -3,6 +3,8 @@ import puppeteer from 'puppeteer'
 export async function htmlToPdfBuffer(html) {
   const browser = await puppeteer.launch({
     headless: true,
+    channel: process.env.PUPPETEER_CHANNEL || 'chrome',
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   })
 

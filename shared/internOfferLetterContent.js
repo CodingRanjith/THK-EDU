@@ -125,3 +125,38 @@ export function buildInternExperienceLetterBody(d) {
       <p style="${p}">We found ${escapeHtml(name || 'the intern')} to be sincere, dedicated, and cooperative. This letter is issued upon successful completion of the internship and may be used for academic or professional purposes.</p>
       <p style="margin:0;text-align:justify;">We wish ${escapeHtml(name || 'the intern')} continued success in all future endeavours.</p>`
 }
+
+export function buildInternshipCertificateBody(d) {
+  const name = d.studentName || d.recipientName
+  const domain = d.internshipDomain || d.courseName || ''
+  const position = d.position || d.internshipRole || ''
+  const startDate = formatLetterDate(d.startDate)
+  const endDate = formatLetterDate(d.endDate)
+  const durationRange = startDate && endDate ? `${startDate} – ${endDate}` : startDate || endDate || ''
+  const taskArea = getInternTaskArea(d)
+  const performance = d.performance || 'Satisfactory performance throughout the internship period.'
+  const projectWork = d.projectTitle || d.responsibilities || getTaskPhrase(taskArea)
+
+  const p = 'margin:0 0 6pt;text-align:justify;'
+  const section = `margin:8pt 0 3pt;font-size:10pt;font-weight:600;color:${LETTER_COLOR};`
+  const list = `margin:0 0 6pt;padding-left:14pt;list-style-type:disc;list-style-position:outside;`
+  const li = 'margin:0 0 2pt;padding-left:1pt;'
+
+  return `
+      <h2 style="text-align:center;font-size:11.5pt;font-weight:700;margin:0 0 10pt;text-decoration:underline;text-underline-offset:2px;letter-spacing:0.1em;color:${LETTER_COLOR};">INTERNSHIP CERTIFICATE</h2>
+      <p style="${p}">This is to certify that <strong>${displayValue(name)}</strong> has successfully completed an internship as <strong>${displayValue(position)}</strong> in the <strong>${displayValue(domain)}</strong> at <strong>Techackode</strong> for a duration of <strong>${displayValue(d.duration)}</strong>, from <strong>${displayValue(startDate)}</strong> to <strong>${displayValue(endDate)}</strong>.</p>
+      <p style="${p}">During this internship, ${escapeHtml(name || 'the intern')} worked on ${escapeHtml(projectWork)} and live projects under the guidance of our team. ${escapeHtml(name || 'They')} completed assigned tasks within timelines, maintained professional conduct, and fulfilled the internship criteria as reviewed by the assigned mentor.</p>
+      <p style="${section}">Internship Details</p>
+      <ul style="${list}">
+        <li style="${li}"><strong>Position:</strong> ${displayValue(position)}</li>
+        <li style="${li}"><strong>Duration:</strong> ${displayValue(durationRange)}</li>
+        <li style="${li}"><strong>Work Mode:</strong> ${escapeHtml(d.workMode || 'Online')}</li>
+        <li style="${li}"><strong>Project / Work:</strong> ${displayValue(d.projectTitle || projectWork)}</li>
+      </ul>
+      <p style="${section}">Scope of Work</p>
+      <p style="${p}">During the internship, ${escapeHtml(name || 'the intern')} was involved in ${escapeHtml(getTaskPhrase(taskArea))}, project assignments, and team activities. ${escapeHtml(name || 'They')} gained practical exposure to real-world workflows and strengthened technical and professional skills.</p>
+      <p style="${section}">Performance Summary</p>
+      <p style="${p}">${escapeHtml(performance)}</p>
+      <p style="${p}">We found ${escapeHtml(name || 'the intern')} to be sincere, dedicated, and cooperative throughout the internship period. This certificate is issued upon successful completion of all assigned work and may be used for academic or professional purposes.</p>
+      <p style="margin:0;text-align:justify;">We congratulate ${escapeHtml(name || 'the intern')} on this achievement and wish continued success in all future endeavours.</p>`
+}
